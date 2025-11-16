@@ -32,7 +32,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <Button
-              className="font-mono"
+              className="rounded-none font-mono"
               onClick={() => {
                 router.invalidate();
               }}
@@ -42,13 +42,13 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
               &gt; Try Again
             </Button>
             {isRoot ? (
-              <Button asChild className="font-mono">
+              <Button asChild className="rounded-none font-mono">
                 <Link to="/">&gt; Home</Link>
               </Button>
             ) : (
               <Button
                 asChild
-                className="font-mono"
+                className="rounded-none font-mono"
                 onClick={(e) => {
                   e.preventDefault();
                   window.history.back();

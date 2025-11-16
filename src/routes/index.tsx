@@ -29,7 +29,7 @@ export default function Home() {
                 </h1>
                 <Button
                   asChild
-                  className="font-mono"
+                  className="rounded-none font-mono"
                   size="sm"
                   variant="outline"
                 >
@@ -61,7 +61,7 @@ export default function Home() {
 
             <div className="flex justify-center pt-4">
               <Button
-                className="w-full font-mono md:w-auto"
+                className="w-full rounded-none font-mono md:w-auto"
                 onClick={() => navigate({ to: "/world-selection" })}
                 size="lg"
               >

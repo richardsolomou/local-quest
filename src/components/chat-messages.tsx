@@ -104,7 +104,7 @@ export function ChatMessages({
                 &gt; Error: An error occurred. Please try again.
               </p>
               <Button
-                className="font-mono"
+                className="rounded-none font-mono"
                 data-umami-event="message_regenerated"
                 disabled={status === "streaming" || status === "submitted"}
                 onClick={onRegenerate}

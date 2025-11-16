@@ -46,11 +46,11 @@ export function ChatInput({
 
   return (
     <div className="space-y-3">
-      <PromptInput onSubmit={onSubmit}>
-        <PromptInputBody>
+      <PromptInput className="bg-background" onSubmit={onSubmit}>
+        <PromptInputBody className="bg-background">
           <PromptInputTextarea
             autoFocus
-            className="border-zinc-800 bg-zinc-900/30 font-mono text-sm text-zinc-300 placeholder:text-zinc-600 focus:border-primary focus:ring-primary/20"
+            className="border-zinc-800 bg-background! font-mono text-sm text-zinc-300 placeholder:text-zinc-600 focus:border-primary focus:ring-primary/20"
             disabled={isInputDisabled}
             onChange={(e) => onInputChange(e.target.value)}
             placeholder="&gt; Type your action..."
@@ -58,7 +58,7 @@ export function ChatInput({
             value={input}
           />
         </PromptInputBody>
-        <PromptInputFooter className="justify-end">
+        <PromptInputFooter className="justify-end bg-background">
           <PromptInputSubmit
             className="font-mono"
             data-umami-event={

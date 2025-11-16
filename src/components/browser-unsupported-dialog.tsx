@@ -39,7 +39,7 @@ export function BrowserUnsupportedDialog() {
                     <li>Make sure you're using Chrome 128+ or Edge Dev</li>
                     <li>
                       Go to{" "}
-                      <code className="rounded bg-zinc-800 px-1 py-0.5 text-xs">
+                      <code className="bg-zinc-800 px-1 py-0.5 text-xs">
                         chrome://flags/#prompt-api-for-gemini-nano-multimodal-input
                       </code>
                     </li>
