@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { ChatInput } from "~/components/chat-input";
 import { ChatMessages } from "~/components/chat-messages";
+import { Footer } from "~/components/footer";
 import { ModelDownloadBanner } from "~/components/model-download-banner";
 import { ClientSideChatTransport } from "~/lib/client-side-chat-transport";
 import { useWorldStore } from "~/stores/world-store";
@@ -144,7 +145,7 @@ export default function Chat() {
         </div>
 
         {/* Bottom input area */}
-        <div className="shrink-0 bg-background p-6">
+        <div className="shrink-0 bg-background pt-6">
           <div className="mx-auto max-w-4xl">
             <div className="mx-auto max-w-2xl">
               <ChatInput
@@ -157,6 +158,13 @@ export default function Chat() {
             </div>
           </div>
         </div>
+
+        {/* Footer */}
+        <footer className="shrink-0">
+          <div className="mx-auto w-full max-w-4xl pt-6">
+            <Footer />
+          </div>
+        </footer>
       </div>
     </div>
   );

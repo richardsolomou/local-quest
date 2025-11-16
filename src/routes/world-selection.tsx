@@ -13,6 +13,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { BrowserUnsupportedDialog } from "~/components/browser-unsupported-dialog";
+import { Footer } from "~/components/footer";
 import { generateInitialMessage } from "~/lib/generate-initial-message";
 import { generateWorldData } from "~/lib/generate-world";
 import { useWorldStore } from "~/stores/world-store";
@@ -160,14 +161,14 @@ export default function WorldSelection() {
     selectedSeed !== null || customPrompt.trim().length > 0;
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background p-6">
+    <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background">
       <BrowserUnsupportedDialog />
 
       {/* Text Adventure Style Container */}
-      <div className="mx-auto w-full max-w-4xl font-mono">
+      <div className="mx-auto flex min-h-0 w-full max-w-4xl flex-1 flex-col font-mono">
         {/* Main content area */}
-        <div className="p-6">
-          <div className="mx-auto max-w-2xl space-y-6">
+        <main className="relative flex min-h-0 flex-1 flex-col items-center justify-center p-6">
+          <div className="w-full max-w-2xl space-y-6">
             {/* Title */}
             <div className="space-y-2">
               <h1 className="font-bold text-2xl text-zinc-100">
@@ -231,150 +232,161 @@ export default function WorldSelection() {
                 value={customPrompt}
               />
             </div>
+
+            {/* Start Adventure Button */}
+            <div className="flex justify-center pt-4">
+              <Button
+                className="w-full font-mono md:w-auto"
+                disabled={!canStartAdventure || isGenerating}
+                onClick={() => {
+                  console.log("🔘 Button clicked!", {
+                    selectedSeed,
+                    customPrompt,
+                    canStartAdventure,
+                  });
+                  const prompt = selectedSeed || customPrompt.trim();
+                  console.log("📋 Resolved prompt:", prompt);
+                  if (prompt) {
+                    console.log("✅ Calling handleStartAdventure");
+                    handleStartAdventure(prompt);
+                  } else {
+                    console.log("❌ No prompt available");
+                  }
+                }}
+                size="lg"
+              >
+                {isGenerating ? (
+                  <>&gt; Generating...</>
+                ) : (
+                  <>&gt; Start Adventure</>
+                )}
+              </Button>
+            </div>
           </div>
-        </div>
 
-        {/* Generation Progress Dialog */}
-        <Dialog open={isGenerating}>
-          <DialogContent className="max-w-md font-mono" showCloseButton={false}>
-            <DialogHeader>
-              <DialogTitle className="font-mono text-zinc-100">
-                &gt; Generating Your World
-              </DialogTitle>
-              <DialogDescription className="font-mono text-zinc-400">
-                &gt; Creating your text adventure world...
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-3 py-4">
-              {/* World Fields */}
-              <div className="space-y-2">
-                <h3 className="font-semibold text-sm text-zinc-300">
-                  &gt; World Data
-                </h3>
-                <div className="space-y-1.5">
-                  {WORLD_FIELDS.map((field) => {
-                    const isComplete = completedFields.has(field.key);
-                    const isCurrent = currentField === field.key && !isComplete;
-                    return (
-                      <div
-                        className="flex items-center gap-2 text-sm"
-                        key={field.key}
-                      >
-                        {isComplete ? (
-                          <span className="text-green-500">[✓]</span>
-                        ) : isCurrent ? (
-                          <span className="animate-pulse text-zinc-400">
-                            [...]
-                          </span>
-                        ) : (
-                          <span className="text-zinc-600">[ ]</span>
-                        )}
-                        <span
-                          className={
-                            isComplete
-                              ? "text-zinc-300"
-                              : isCurrent
-                                ? "text-zinc-400"
-                                : "text-zinc-600"
-                          }
+          {/* Generation Progress Dialog */}
+          <Dialog open={isGenerating}>
+            <DialogContent
+              className="max-w-md font-mono"
+              showCloseButton={false}
+            >
+              <DialogHeader>
+                <DialogTitle className="font-mono text-zinc-100">
+                  &gt; Generating Your World
+                </DialogTitle>
+                <DialogDescription className="font-mono text-zinc-400">
+                  &gt; Creating your text adventure world...
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-3 py-4">
+                {/* World Fields */}
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-sm text-zinc-300">
+                    &gt; World Data
+                  </h3>
+                  <div className="space-y-1.5">
+                    {WORLD_FIELDS.map((field) => {
+                      const isComplete = completedFields.has(field.key);
+                      const isCurrent =
+                        currentField === field.key && !isComplete;
+                      return (
+                        <div
+                          className="flex items-center gap-2 text-sm"
+                          key={field.key}
                         >
-                          {field.label}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Initial Message */}
-              <div className="space-y-2 border-zinc-800 border-t pt-3">
-                <h3 className="font-semibold text-sm text-zinc-300">
-                  &gt; Opening Scene
-                </h3>
-                <div className="flex items-center gap-2 text-sm">
-                  {isInitialMessageComplete ? (
-                    <>
-                      <span className="text-green-500">[✓]</span>
-                      <span className="text-zinc-300">Opening scene</span>
-                    </>
-                  ) : currentField === "openingScene" ? (
-                    <>
-                      <span className="animate-pulse text-zinc-400">[...]</span>
-                      <span className="text-zinc-400">
-                        Writing opening scene...
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-zinc-600">[ ]</span>
-                      <span className="text-zinc-600">Opening scene</span>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Pending Fields Warning */}
-              {isInitialMessageComplete && currentField && (
-                <div className="border-zinc-800 border-t pt-3">
-                  <div className="flex items-center gap-2 text-sm text-zinc-400">
-                    <span className="animate-pulse">[...]</span>
-                    <span>
-                      {currentField === "openingScene"
-                        ? "Finalizing opening scene..."
-                        : `Finalizing ${WORLD_FIELDS.find((f) => f.key === currentField)?.label || currentField}...`}
-                    </span>
+                          {isComplete ? (
+                            <span className="text-green-500">[✓]</span>
+                          ) : isCurrent ? (
+                            <span className="animate-pulse text-zinc-400">
+                              [...]
+                            </span>
+                          ) : (
+                            <span className="text-zinc-600">[ ]</span>
+                          )}
+                          <span
+                            className={
+                              isComplete
+                                ? "text-zinc-300"
+                                : isCurrent
+                                  ? "text-zinc-400"
+                                  : "text-zinc-600"
+                            }
+                          >
+                            {field.label}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              )}
 
-              {/* Completion Message */}
-              {isInitialMessageComplete &&
-                completedFields.size >= 7 && // At least all required fields
-                !currentField && (
+                {/* Initial Message */}
+                <div className="space-y-2 border-zinc-800 border-t pt-3">
+                  <h3 className="font-semibold text-sm text-zinc-300">
+                    &gt; Opening Scene
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm">
+                    {isInitialMessageComplete ? (
+                      <>
+                        <span className="text-green-500">[✓]</span>
+                        <span className="text-zinc-300">Opening scene</span>
+                      </>
+                    ) : currentField === "openingScene" ? (
+                      <>
+                        <span className="animate-pulse text-zinc-400">
+                          [...]
+                        </span>
+                        <span className="text-zinc-400">
+                          Writing opening scene...
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-zinc-600">[ ]</span>
+                        <span className="text-zinc-600">Opening scene</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Pending Fields Warning */}
+                {isInitialMessageComplete && currentField && (
                   <div className="border-zinc-800 border-t pt-3">
-                    <div className="flex items-center gap-2 text-green-500 text-sm">
-                      <span>[✓]</span>
+                    <div className="flex items-center gap-2 text-sm text-zinc-400">
+                      <span className="animate-pulse">[...]</span>
                       <span>
-                        World generation complete! Starting adventure...
+                        {currentField === "openingScene"
+                          ? "Finalizing opening scene..."
+                          : `Finalizing ${WORLD_FIELDS.find((f) => f.key === currentField)?.label || currentField}...`}
                       </span>
                     </div>
                   </div>
                 )}
-            </div>
-          </DialogContent>
-        </Dialog>
 
-        {/* Bottom action bar */}
-        <div className="p-4">
-          <div className="mx-auto flex max-w-2xl justify-center">
-            <Button
-              className="font-mono"
-              disabled={!canStartAdventure || isGenerating}
-              onClick={() => {
-                console.log("🔘 Button clicked!", {
-                  selectedSeed,
-                  customPrompt,
-                  canStartAdventure,
-                });
-                const prompt = selectedSeed || customPrompt.trim();
-                console.log("📋 Resolved prompt:", prompt);
-                if (prompt) {
-                  console.log("✅ Calling handleStartAdventure");
-                  handleStartAdventure(prompt);
-                } else {
-                  console.log("❌ No prompt available");
-                }
-              }}
-              size="lg"
-            >
-              {isGenerating ? (
-                <>&gt; Generating...</>
-              ) : (
-                <>&gt; Start Adventure</>
-              )}
-            </Button>
+                {/* Completion Message */}
+                {isInitialMessageComplete &&
+                  completedFields.size >= 7 && // At least all required fields
+                  !currentField && (
+                    <div className="border-zinc-800 border-t pt-3">
+                      <div className="flex items-center gap-2 text-green-500 text-sm">
+                        <span>[✓]</span>
+                        <span>
+                          World generation complete! Starting adventure...
+                        </span>
+                      </div>
+                    </div>
+                  )}
+              </div>
+            </DialogContent>
+          </Dialog>
+        </main>
+
+        {/* Footer */}
+        <footer className="sticky bottom-0 z-20">
+          <div className="mx-auto w-full max-w-4xl p-6">
+            <Footer />
           </div>
-        </div>
+        </footer>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background p-6">
+    <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background">
       <BrowserUnsupportedDialog />
 
       {/* Text Adventure Style Container */}
@@ -24,7 +24,7 @@ export default function Home() {
           <div className="w-full max-w-2xl space-y-8">
             <div className="space-y-6">
               <div className="flex items-center justify-center gap-4">
-                <h1 className="font-bold text-4xl text-zinc-100">
+                <h1 className="font-bold text-3xl text-zinc-100 sm:text-4xl">
                   local-quest.ras.sh
                 </h1>
                 <Button
