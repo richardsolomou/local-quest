@@ -21,14 +21,16 @@ export function ModelDownloadBanner({
 
   return (
     <AlertDialog open={isOpen}>
-      <AlertDialogContent className="max-w-md">
-        <AlertDialogTitle className="sr-only">Model Download</AlertDialogTitle>
+      <AlertDialogContent className="max-w-md font-mono">
+        <AlertDialogTitle className="sr-only font-mono">
+          Model Download
+        </AlertDialogTitle>
         <AlertDialogDescription asChild>
-          <div className="space-y-3">
+          <div className="space-y-3 font-mono">
             <div className="flex items-center justify-between gap-4">
-              <p className="font-mono text-sm text-zinc-300">{message}</p>
+              <p className="text-sm text-zinc-300">&gt; {message}</p>
               {status === "downloading" && (
-                <span className="font-mono text-sm text-zinc-400 tabular-nums">
+                <span className="text-sm text-zinc-400 tabular-nums">
                   {progress}%
                 </span>
               )}
@@ -42,7 +44,7 @@ export function ModelDownloadBanner({
               </div>
             )}
             {status === "error" && (
-              <p className="text-red-400 text-sm">{message}</p>
+              <p className="text-red-400 text-sm">&gt; {message}</p>
             )}
           </div>
         </AlertDialogDescription>

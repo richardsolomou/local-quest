@@ -1,6 +1,5 @@
 import type { UseChatHelpers } from "@ai-sdk/react";
 import type { BuiltInAIUIMessage } from "@built-in-ai/core";
-import { Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import {
   PromptInput,
@@ -9,18 +8,6 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
 } from "~/components/ai-elements/prompt-input";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "~/components/ui/alert-dialog";
-import { Button } from "~/components/ui/button";
 import { useBrowserAISupport } from "~/hooks/use-browser-ai-support";
 
 type ChatInputProps = {
@@ -29,8 +16,6 @@ type ChatInputProps = {
   onSubmit: () => void;
   status: UseChatHelpers<BuiltInAIUIMessage>["status"];
   stop: UseChatHelpers<BuiltInAIUIMessage>["stop"];
-  onClearConversation?: () => void;
-  hasMessages?: boolean;
 };
 
 export function ChatInput({
@@ -39,8 +24,6 @@ export function ChatInput({
   onSubmit,
   status,
   stop,
-  onClearConversation,
-  hasMessages,
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const prevStatusRef = useRef(status);
@@ -75,43 +58,7 @@ export function ChatInput({
             value={input}
           />
         </PromptInputBody>
-        <PromptInputFooter>
-          <div className="flex items-center gap-1">
-            {hasMessages && onClearConversation && (
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    className="font-mono"
-                    data-umami-event="clear_conversation_button_clicked"
-                    disabled={isInputDisabled}
-                    size="icon"
-                    type="button"
-                    variant="ghost"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent className="font-mono">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Clear conversation?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This will delete all messages in the current conversation.
-                      This action cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      data-umami-event="conversation_cleared"
-                      onClick={onClearConversation}
-                    >
-                      Clear
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )}
-          </div>
+        <PromptInputFooter className="justify-end">
           <PromptInputSubmit
             className="font-mono"
             data-umami-event={

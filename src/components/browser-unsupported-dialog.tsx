@@ -20,24 +20,26 @@ export function BrowserUnsupportedDialog() {
 
   return (
     <AlertDialog open={isOpen}>
-      <AlertDialogContent className="max-w-md">
+      <AlertDialogContent className="max-w-md font-mono">
         <AlertDialogHeader>
-          <AlertDialogTitle>Browser Not Supported</AlertDialogTitle>
+          <AlertDialogTitle className="font-mono">
+            &gt; Browser Not Supported
+          </AlertDialogTitle>
           <AlertDialogDescription asChild>
-            <div className="space-y-4">
+            <div className="space-y-4 font-mono">
               <p className="text-zinc-300">
-                Your browser doesn't support the Prompt API, which is required
-                for running AI models.
+                &gt; Your browser doesn't support the Prompt API, which is
+                required for running AI models.
               </p>
 
               {isChromium ? (
                 <div className="space-y-2">
-                  <p className="text-sm text-zinc-400">To enable it:</p>
+                  <p className="text-sm text-zinc-400">&gt; To enable it:</p>
                   <ol className="list-decimal space-y-1 pl-5 text-sm text-zinc-300">
                     <li>Make sure you're using Chrome 128+ or Edge Dev</li>
                     <li>
                       Go to{" "}
-                      <code className="rounded bg-zinc-800 px-1 py-0.5 font-mono text-xs">
+                      <code className="rounded bg-zinc-800 px-1 py-0.5 text-xs">
                         chrome://flags/#prompt-api-for-gemini-nano-multimodal-input
                       </code>
                     </li>
@@ -50,7 +52,7 @@ export function BrowserUnsupportedDialog() {
                 </div>
               ) : (
                 <p className="text-sm text-zinc-300">
-                  Please switch to Chrome 128+ or Edge Dev to use this
+                  &gt; Please switch to Chrome 128+ or Edge Dev to use this
                   application. Other browsers don't currently support Chrome's
                   built-in AI.
                 </p>
@@ -64,7 +66,7 @@ export function BrowserUnsupportedDialog() {
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn more about Chrome's built-in AI
+                &gt; Learn more about Chrome's built-in AI
               </a>
             </div>
           </AlertDialogDescription>

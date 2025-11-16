@@ -1,7 +1,6 @@
 "use client";
 
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Check, Loader2, Play } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { BrowserUnsupportedDialog } from "~/components/browser-unsupported-dialog";
@@ -161,7 +160,7 @@ export default function WorldSelection() {
     selectedSeed !== null || customPrompt.trim().length > 0;
 
   return (
-    <div className="relative min-h-screen w-full bg-background p-6">
+    <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background p-6">
       <BrowserUnsupportedDialog />
 
       {/* Text Adventure Style Container */}
@@ -175,7 +174,7 @@ export default function WorldSelection() {
                 &gt; Choose Your World
               </h1>
               <p className="text-zinc-400">
-                Select a seed prompt or create your own custom world.
+                &gt; Select a seed prompt or create your own custom world.
               </p>
             </div>
 
@@ -239,18 +238,18 @@ export default function WorldSelection() {
         <Dialog open={isGenerating}>
           <DialogContent className="max-w-md font-mono" showCloseButton={false}>
             <DialogHeader>
-              <DialogTitle className="text-zinc-100">
+              <DialogTitle className="font-mono text-zinc-100">
                 &gt; Generating Your World
               </DialogTitle>
-              <DialogDescription className="text-zinc-400">
-                Creating your text adventure world...
+              <DialogDescription className="font-mono text-zinc-400">
+                &gt; Creating your text adventure world...
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-3 py-4">
               {/* World Fields */}
               <div className="space-y-2">
                 <h3 className="font-semibold text-sm text-zinc-300">
-                  World Data
+                  &gt; World Data
                 </h3>
                 <div className="space-y-1.5">
                   {WORLD_FIELDS.map((field) => {
@@ -262,11 +261,13 @@ export default function WorldSelection() {
                         key={field.key}
                       >
                         {isComplete ? (
-                          <Check className="h-4 w-4 text-green-500" />
+                          <span className="text-green-500">[✓]</span>
                         ) : isCurrent ? (
-                          <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
+                          <span className="animate-pulse text-zinc-400">
+                            [...]
+                          </span>
                         ) : (
-                          <div className="h-4 w-4 rounded-full border border-zinc-700" />
+                          <span className="text-zinc-600">[ ]</span>
                         )}
                         <span
                           className={
@@ -288,24 +289,24 @@ export default function WorldSelection() {
               {/* Initial Message */}
               <div className="space-y-2 border-zinc-800 border-t pt-3">
                 <h3 className="font-semibold text-sm text-zinc-300">
-                  Opening Scene
+                  &gt; Opening Scene
                 </h3>
                 <div className="flex items-center gap-2 text-sm">
                   {isInitialMessageComplete ? (
                     <>
-                      <Check className="h-4 w-4 text-green-500" />
+                      <span className="text-green-500">[✓]</span>
                       <span className="text-zinc-300">Opening scene</span>
                     </>
                   ) : currentField === "openingScene" ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin text-zinc-400" />
+                      <span className="animate-pulse text-zinc-400">[...]</span>
                       <span className="text-zinc-400">
                         Writing opening scene...
                       </span>
                     </>
                   ) : (
                     <>
-                      <div className="h-4 w-4 rounded-full border border-zinc-700" />
+                      <span className="text-zinc-600">[ ]</span>
                       <span className="text-zinc-600">Opening scene</span>
                     </>
                   )}
@@ -315,8 +316,8 @@ export default function WorldSelection() {
               {/* Pending Fields Warning */}
               {isInitialMessageComplete && currentField && (
                 <div className="border-zinc-800 border-t pt-3">
-                  <div className="flex items-center gap-2 text-sm text-yellow-500">
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                  <div className="flex items-center gap-2 text-sm text-zinc-400">
+                    <span className="animate-pulse">[...]</span>
                     <span>
                       {currentField === "openingScene"
                         ? "Finalizing opening scene..."
@@ -332,7 +333,7 @@ export default function WorldSelection() {
                 !currentField && (
                   <div className="border-zinc-800 border-t pt-3">
                     <div className="flex items-center gap-2 text-green-500 text-sm">
-                      <Check className="h-4 w-4" />
+                      <span>[✓]</span>
                       <span>
                         World generation complete! Starting adventure...
                       </span>
@@ -367,15 +368,9 @@ export default function WorldSelection() {
               size="lg"
             >
               {isGenerating ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Generating...
-                </>
+                <>&gt; Generating...</>
               ) : (
-                <>
-                  <Play className="mr-2 h-5 w-5" />
-                  Start Adventure
-                </>
+                <>&gt; Start Adventure</>
               )}
             </Button>
           </div>

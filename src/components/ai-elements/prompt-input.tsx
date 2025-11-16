@@ -4,12 +4,9 @@
 import type { ChatStatus, FileUIPart } from "ai";
 import {
   ImageIcon,
-  Loader2Icon,
   MicIcon,
   PaperclipIcon,
   PlusIcon,
-  SendIcon,
-  SquareIcon,
   XIcon,
 } from "lucide-react";
 import { nanoid } from "nanoid";
@@ -986,14 +983,14 @@ export const PromptInputSubmit = ({
   children,
   ...props
 }: PromptInputSubmitProps) => {
-  let Icon = <SendIcon className="size-4" />;
+  let Icon = <span className="font-mono">[→]</span>;
 
   if (status === "submitted") {
-    Icon = <Loader2Icon className="size-4 animate-spin" />;
+    Icon = <span className="animate-pulse font-mono">[...]</span>;
   } else if (status === "streaming") {
-    Icon = <SquareIcon className="size-4" />;
+    Icon = <span className="font-mono">[■]</span>;
   } else if (status === "error") {
-    Icon = <XIcon className="size-4" />;
+    Icon = <span className="font-mono">[X]</span>;
   }
 
   return (

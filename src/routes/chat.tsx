@@ -107,16 +107,6 @@ export default function Chat() {
     }
   };
 
-  const handleClearConversation = () => {
-    // Stop any ongoing generation
-    if (status === "submitted" || status === "streaming") {
-      stop();
-      setTimeout(() => setMessages([]), 100);
-    } else {
-      setMessages([]);
-    }
-  };
-
   return (
     <div className="relative flex h-screen w-full flex-col overflow-hidden bg-background p-6">
       {/* Model Download Banner - Absolutely positioned */}
@@ -131,7 +121,7 @@ export default function Chat() {
       {/* Text Adventure Style Container */}
       <div className="mx-auto flex h-full w-full max-w-4xl flex-col font-mono">
         {/* Main Content - Scrollable */}
-        <div className="flex min-h-0 flex-1 flex-col">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
           {messages.length === 0 ? (
             <div className="flex h-full items-center justify-center p-6">
               <div className="text-center">
@@ -154,13 +144,11 @@ export default function Chat() {
         </div>
 
         {/* Bottom input area */}
-        <div className="bg-background p-6">
+        <div className="shrink-0 bg-background p-6">
           <div className="mx-auto max-w-4xl">
             <div className="mx-auto max-w-2xl">
               <ChatInput
-                hasMessages={messages.length > 0}
                 input={input}
-                onClearConversation={handleClearConversation}
                 onInputChange={setInput}
                 onSubmit={handleSubmit}
                 status={status}
