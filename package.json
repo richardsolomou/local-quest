@@ -1,11 +1,11 @@
 {
-  "name": "@ras-sh/local-chat",
+  "name": "@ras-sh/local-quest",
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "description": "💬 Local-first AI chat using Chrome's built-in AI. Conversations run entirely in your browser and stay on your device.",
+  "description": "🗺️ Local-first AI text adventures using your browser's built-in AI. Infinite worlds generated and played entirely on your device.",
   "keywords": [
-    "chat",
+    "quest",
     "llm",
     "chrome",
     "prompt-api",
@@ -14,14 +14,14 @@
     "browser",
     "built-in-ai"
   ],
-  "homepage": "https://local-chat.ras.sh",
+  "homepage": "https://local-quest.ras.sh",
   "bugs": {
-    "url": "https://github.com/ras-sh/local-chat/issues",
+    "url": "https://github.com/ras-sh/local-quest/issues",
     "email": "hi@ras.sh"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ras-sh/local-chat"
+    "url": "https://github.com/ras-sh/local-quest"
   },
   "license": "MIT",
   "author": {

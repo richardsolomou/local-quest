@@ -21,9 +21,9 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       ...seo({
-        title: "local-chat.ras.sh - Local LLM Chat",
+        title: "local-quest.ras.sh - Local AI Text Adventures",
         description:
-          "Local-only LLM chat application powered by Transformers.js. Your conversations stay in your browser, never sent to external servers.",
+          "Local-first AI text adventures using your browser's built-in AI. Infinite worlds generated and played entirely on your device.",
       }),
     ],
     links: [
