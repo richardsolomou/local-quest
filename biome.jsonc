@@ -7,7 +7,8 @@
         "noNamespaceImport": "off"
       },
       "style": {
-        "noMagicNumbers": "off"
+        "noMagicNumbers": "off",
+        "noNestedTernary": "off"
       },
       "nursery": {
         "noShadow": "off"

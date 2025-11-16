@@ -1,170 +1,67 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
-import type { BuiltInAIUIMessage } from "@built-in-ai/core";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { toast } from "sonner";
-import { ChatEmptyState } from "~/components/chat-empty-state";
-import { ChatInput } from "~/components/chat-input";
-import { ChatMessages } from "~/components/chat-messages";
+import { SiGithub } from "@icons-pack/react-simple-icons";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { BrowserUnsupportedDialog } from "~/components/browser-unsupported-dialog";
 import { Footer } from "~/components/footer";
-import { Header } from "~/components/header";
-import { ModelDownloadBanner } from "~/components/model-download-banner";
-import { ClientSideChatTransport } from "~/lib/client-side-chat-transport";
-import { cn } from "~/lib/utils";
-import { useSuggestionsStore } from "~/stores/suggestions-store";
+import { Button } from "~/components/ui/button";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
 
 export default function Home() {
-  const [input, setInput] = useState("");
-  const [files, setFiles] = useState<FileList | undefined>(undefined);
-  const suggestions = useSuggestionsStore((state) => state.suggestions);
-  const [modelDownload, setModelDownload] = useState<{
-    status: "downloading" | "complete" | "error";
-    progress: number;
-    message: string;
-  } | null>(null);
-
-  const {
-    error,
-    status,
-    sendMessage,
-    messages,
-    regenerate,
-    stop,
-    setMessages,
-  } = useChat<BuiltInAIUIMessage>({
-    transport: new ClientSideChatTransport(),
-    onError(error) {
-      toast.error(error.message);
-    },
-    onData: (dataPart) => {
-      // Handle model download progress
-      if (dataPart.type === "data-modelDownloadProgress") {
-        setModelDownload({
-          status: dataPart.data.status,
-          progress: dataPart.data.progress ?? 0,
-          message: dataPart.data.message,
-        });
-        // Clear the download banner when complete
-        if (dataPart.data.status === "complete") {
-          setTimeout(() => setModelDownload(null), 500);
-        }
-        return;
-      }
-      // Handle transient notifications
-      if (dataPart.type === "data-notification") {
-        if (dataPart.data.level === "error") {
-          toast.error(dataPart.data.message);
-        } else if (dataPart.data.level === "warning") {
-          toast.warning(dataPart.data.message);
-        } else {
-          toast.info(dataPart.data.message);
-        }
-      }
-    },
-  });
-
-  const isLoading = status !== "ready";
-
-  // Send a message
-  const handleSubmit = () => {
-    // Allow submission when ready, or after an error/stop (not during submit/stream)
-    const canSubmit =
-      (input.trim() || files) &&
-      status !== "submitted" &&
-      status !== "streaming";
-
-    if (canSubmit) {
-      // Track message submission
-      window.umami?.track("message_submitted");
-
-      sendMessage({
-        text: input,
-        files,
-      });
-      setInput("");
-      setFiles(undefined);
-    }
-  };
-
-  const handleSuggestionClick = (suggestion: string) => {
-    // Allow submission when not actively submitting or streaming
-    if (status !== "submitted" && status !== "streaming") {
-      sendMessage({
-        text: suggestion,
-        files,
-      });
-      setInput("");
-      setFiles(undefined);
-    }
-  };
-
-  const handleClearConversation = () => {
-    // Stop any ongoing generation
-    if (status === "submitted" || status === "streaming") {
-      stop();
-      setTimeout(() => setMessages([]), 100);
-    } else {
-      setMessages([]);
-    }
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="relative flex h-screen w-full flex-col overflow-hidden">
-      <Header />
-
-      {/* Model Download Banner - Absolutely positioned */}
-      {modelDownload && (
-        <ModelDownloadBanner
-          message={modelDownload.message}
-          progress={modelDownload.progress}
-          status={modelDownload.status}
-        />
-      )}
+    <div className="relative flex min-h-screen w-full flex-col overflow-hidden p-6">
+      <BrowserUnsupportedDialog />
 
       {/* Main Content */}
-      <main
-        className={cn(
-          "relative mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col",
-          messages.length === 0 && "items-center justify-center"
-        )}
-      >
-        {messages.length === 0 ? (
-          <ChatEmptyState onSuggestionClick={handleSuggestionClick} />
-        ) : (
-          <ChatMessages
-            error={error}
-            messages={messages}
-            onRegenerate={regenerate}
-            status={status}
-          />
-        )}
+      <main className="relative mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col items-center justify-center p-6">
+        <div className="w-full max-w-2xl space-y-8 text-center">
+          <div className="space-y-6">
+            <div className="flex items-center justify-center gap-4">
+              <h1 className="font-bold font-mono text-4xl text-zinc-100">
+                local-quest.ras.sh
+              </h1>
+              <Button asChild size="sm" variant="outline">
+                <a
+                  data-umami-event="github_link_clicked"
+                  data-umami-event-location="intro_screen"
+                  href="https://github.com/ras-sh/local-quest"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <SiGithub className="size-4" />
+                  GitHub
+                </a>
+              </Button>
+            </div>
+            <p className="font-sans text-xl text-zinc-300 leading-relaxed">
+              🗺️ Local-first AI text adventures using your browser's built-in AI.
+              Infinite worlds generated and played entirely on your device.
+            </p>
+            <p className="font-sans text-base text-zinc-400 leading-relaxed">
+              Choose your adventure seed and let the AI create a unique world
+              for you to explore. Every decision matters, and every playthrough
+              is different.
+            </p>
+          </div>
+
+          <Button
+            className="w-full md:w-auto"
+            onClick={() => navigate({ to: "/world-selection" })}
+            size="lg"
+          >
+            Begin Your Adventure
+          </Button>
+        </div>
       </main>
 
       {/* Footer */}
       <footer className="sticky bottom-0 z-20">
-        <div className="mx-auto w-full max-w-3xl space-y-4 p-4">
-          <ChatInput
-            files={files}
-            hasMessages={messages.length > 0}
-            input={input}
-            isLoading={isLoading}
-            onClearConversation={handleClearConversation}
-            onFilesChange={setFiles}
-            onInputChange={setInput}
-            onSubmit={handleSubmit}
-            onSuggestionClick={handleSuggestionClick}
-            showSuggestions={messages.length > 0}
-            status={status}
-            stop={stop}
-            suggestions={suggestions}
-          />
-
+        <div className="mx-auto w-full max-w-3xl p-6">
           <Footer />
         </div>
       </footer>

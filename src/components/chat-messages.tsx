@@ -1,16 +1,10 @@
 import type { BuiltInAIUIMessage } from "@built-in-ai/core";
 import type { ChatStatus } from "ai";
-import { User } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
   ConversationScrollButton,
 } from "~/components/ai-elements/conversation";
-import {
-  Message,
-  MessageAvatar,
-  MessageContent,
-} from "~/components/ai-elements/message";
 import { Response } from "~/components/ai-elements/response";
 import { Button } from "~/components/ui/button";
 
@@ -31,107 +25,86 @@ export function ChatMessages({
     <Conversation>
       <ConversationScrollButton data-umami-event="scroll_to_bottom_clicked" />
       <ConversationContent>
-        <div className="space-y-4 p-4">
+        <div className="space-y-6 p-6 pb-32 font-mono">
           {messages.map((message) => (
-            <Message
-              from={message.role === "system" ? "assistant" : message.role}
-              key={message.id}
-            >
-              <MessageAvatar
-                icon={
-                  message.role === "user" ? (
-                    <User className="h-3.5 w-3.5" />
-                  ) : (
-                    <img
-                      alt="Assistant"
-                      className="h-4 w-4"
-                      src="/favicon-32x32.png"
-                    />
-                  )
-                }
-              />
-              <MessageContent>
-                {/* Message Parts Content */}
-                {message.parts.map((part, i) => {
-                  switch (part.type) {
-                    case "text":
+            <div className="space-y-2" key={message.id}>
+              {/* Message Parts Content */}
+              {message.parts.map((part, i) => {
+                switch (part.type) {
+                  case "text":
+                    return (
+                      <div className="space-y-2" key={`${message.id}-${i}`}>
+                        {message.role === "user" ? (
+                          <div className="text-zinc-500">&gt; {part.text}</div>
+                        ) : (
+                          <div className="whitespace-pre-wrap text-zinc-300 leading-relaxed">
+                            <Response>{part.text}</Response>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  case "file":
+                    if (part.mediaType?.startsWith("image/")) {
                       return (
-                        <Response key={`${message.id}-${i}`}>
-                          {part.text}
-                        </Response>
+                        <div className="mb-3" key={`${message.id}-${i}`}>
+                          <img
+                            alt={part.filename || "Uploaded image"}
+                            className="max-w-md rounded-lg"
+                            src={part.url}
+                          />
+                        </div>
                       );
-                    case "file":
-                      if (part.mediaType?.startsWith("image/")) {
-                        return (
-                          <div className="mb-3" key={`${message.id}-${i}`}>
-                            <img
-                              alt={part.filename || "Uploaded image"}
-                              className="max-w-md rounded-lg"
-                              src={part.url}
-                            />
-                          </div>
-                        );
-                      }
-                      if (part.mediaType?.startsWith("audio/")) {
-                        return (
-                          <div
-                            className="mb-3 space-y-2"
-                            key={`${message.id}-${i}`}
+                    }
+                    if (part.mediaType?.startsWith("audio/")) {
+                      return (
+                        <div
+                          className="mb-3 space-y-2"
+                          key={`${message.id}-${i}`}
+                        >
+                          <audio
+                            className="w-full max-w-md"
+                            controls
+                            src={part.url}
                           >
-                            <audio
-                              className="w-full max-w-md"
-                              controls
-                              src={part.url}
-                            >
-                              <track kind="captions" />
-                              Your browser does not support the audio element.
-                            </audio>
-                            {part.filename && (
-                              <p className="text-sm text-zinc-400">
-                                {part.filename}
-                              </p>
-                            )}
-                          </div>
-                        );
-                      }
-                      return null;
-                    default:
-                      return null;
-                  }
-                })}
-              </MessageContent>
-            </Message>
+                            <track kind="captions" />
+                            Your browser does not support the audio element.
+                          </audio>
+                          {part.filename && (
+                            <p className="text-sm text-zinc-400">
+                              {part.filename}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    }
+                    return null;
+                  default:
+                    return null;
+                }
+              })}
+            </div>
           ))}
 
           {/* Loading State */}
           {status === "submitted" && (
-            <Message from="assistant">
-              <MessageAvatar
-                icon={
-                  <img
-                    alt="Assistant"
-                    className="h-4 w-4"
-                    src="/favicon-32x32.png"
-                  />
-                }
-              />
-              <MessageContent>
-                <div className="mt-2 flex items-center gap-1.5 text-zinc-400">
-                  <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:-0.3s]" />
-                  <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400 [animation-delay:-0.15s]" />
-                  <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400" />
-                </div>
-              </MessageContent>
-            </Message>
+            <div className="flex items-center gap-2 text-zinc-500">
+              <span>&gt;</span>
+              <div className="flex items-center gap-1.5">
+                <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-500 [animation-delay:-0.3s]" />
+                <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-500 [animation-delay:-0.15s]" />
+                <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-500" />
+              </div>
+            </div>
           )}
 
           {/* Error State */}
           {error && (
-            <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-4">
-              <p className="mb-3 text-sm text-zinc-300">
-                An error occurred. Please try again.
+            <div className="rounded border border-red-500/20 bg-red-500/10 p-4 font-mono">
+              <p className="mb-3 text-red-400 text-sm">
+                &gt; Error: An error occurred. Please try again.
               </p>
               <Button
+                className="font-mono"
                 data-umami-event="message_regenerated"
                 disabled={status === "streaming" || status === "submitted"}
                 onClick={onRegenerate}
@@ -140,7 +113,7 @@ export function ChatMessages({
               >
                 Retry
               </Button>
-              <pre className="mt-3 overflow-x-auto rounded-md border bg-background p-4 text-foreground text-sm">
+              <pre className="mt-3 overflow-x-auto rounded border border-zinc-800 bg-zinc-900/50 p-4 text-xs text-zinc-400">
                 {error.message}
               </pre>
             </div>

@@ -8,18 +8,43 @@ import {
   type UIMessageChunk,
 } from "ai";
 import { z } from "zod";
-import { useSuggestionsStore } from "~/stores/suggestions-store";
+import { useWorldStore } from "~/stores/world-store";
 
-const SYSTEM_PROMPT = "You are a helpful AI assistant.";
+function getSystemPrompt(): string {
+  const worldData = useWorldStore.getState().worldData;
+
+  if (!worldData) {
+    return "You are a helpful AI assistant.";
+  }
+
+  return `You are the narrator of a text adventure game set in the following world:
+
+Title: ${worldData.title}
+Setting: ${worldData.setting}
+Tone: ${worldData.tone}
+Genre: ${worldData.genre}
+
+${
+  worldData.characters && worldData.characters.length > 0
+    ? `\nCharacters in this world:\n${worldData.characters
+        .map((c) => `- ${c.name}: ${c.description} (${c.role})`)
+        .join("\n")}`
+    : ""
+}
+
+${
+  worldData.items && worldData.items.length > 0
+    ? `\nImportant items:\n${worldData.items
+        .map((i) => `- ${i.name}: ${i.description}`)
+        .join("\n")}`
+    : ""
+}
+
+Your role is to narrate the player's actions and the consequences, describe the world around them, and present them with meaningful choices. Write in second person ("you", "your") and maintain the ${worldData.tone} tone throughout. Make the adventure engaging, immersive, and responsive to the player's decisions.`;
+}
 
 const responseSchema = z.object({
   response: z.string().describe("The text response to the user's message"),
-  suggestions: z
-    .array(z.string())
-    .optional()
-    .describe(
-      "3-4 relevant follow-up questions the USER could ask next (from the user's perspective, not the assistant's)"
-    ),
 });
 
 /**
@@ -69,7 +94,7 @@ export class ClientSideChatTransport
 
   /**
    * Stream response chunks from the model to the writer.
-   * Handles text deltas from structured output and sends suggestions when complete.
+   * Handles text deltas from structured output.
    */
   private async streamResponse({
     model,
@@ -102,7 +127,7 @@ export class ClientSideChatTransport
 
     const result = streamObject({
       model,
-      system: SYSTEM_PROMPT,
+      system: getSystemPrompt(),
       messages: prompt,
       schema: responseSchema,
       abortSignal,
@@ -141,17 +166,6 @@ export class ClientSideChatTransport
           type: "text-end",
           id: textId,
         });
-      }
-
-      // Send suggestions after the response is complete (skip if aborted)
-      if (!aborted) {
-        const finalObject = await result.object;
-        if (finalObject.suggestions && finalObject.suggestions.length > 0) {
-          // Update Zustand store with suggestions
-          useSuggestionsStore
-            .getState()
-            .setSuggestions(finalObject.suggestions);
-        }
       }
     } catch (error) {
       // If aborted, end the text stream gracefully (only if not already ended)
