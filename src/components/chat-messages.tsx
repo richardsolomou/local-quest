@@ -1,4 +1,5 @@
 import type { BuiltInAIUIMessage } from "@built-in-ai/core";
+import { Button } from "@ras-sh/ui/button";
 import type { ChatStatus } from "ai";
 import {
   Conversation,
@@ -6,7 +7,6 @@ import {
   ConversationScrollButton,
 } from "~/components/ai-elements/conversation";
 import { Response } from "~/components/ai-elements/response";
-import { Button } from "~/components/ui/button";
 
 type ChatMessagesProps = {
   messages: BuiltInAIUIMessage[];

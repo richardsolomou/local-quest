@@ -1,10 +1,10 @@
 "use client";
 
 import { SiGithub } from "@icons-pack/react-simple-icons";
+import { Button } from "@ras-sh/ui/button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BrowserUnsupportedDialog } from "~/components/browser-unsupported-dialog";
 import { Footer } from "~/components/footer";
-import { Button } from "~/components/ui/button";
 
 export const Route = createFileRoute("/")({
   component: Home,

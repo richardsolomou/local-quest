@@ -1,5 +1,5 @@
+import { Button } from "@ras-sh/ui/button";
 import { Link } from "@tanstack/react-router";
-import { Button } from "~/components/ui/button";
 
 export function NotFound({ children }: { children?: React.ReactNode }) {
   return (

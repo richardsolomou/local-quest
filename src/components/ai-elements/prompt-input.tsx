@@ -1,14 +1,42 @@
 // @ts-nocheck
 "use client";
 
-import type { ChatStatus, FileUIPart } from "ai";
+import { Button } from "@ras-sh/ui/button";
 import {
-  ImageIcon,
-  MicIcon,
-  PaperclipIcon,
-  PlusIcon,
-  XIcon,
-} from "lucide-react";
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@ras-sh/ui/command";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@ras-sh/ui/dropdown-menu";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@ras-sh/ui/hover-card";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from "@ras-sh/ui/input-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@ras-sh/ui/select";
+import { cn } from "@ras-sh/ui/utils";
+import type { ChatStatus, FileUIPart } from "ai";
 import { nanoid } from "nanoid";
 import {
   type ChangeEvent,
@@ -32,41 +60,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { Button } from "~/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "~/components/ui/command";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "~/components/ui/hover-card";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupTextarea,
-} from "~/components/ui/input-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
-import { cn } from "~/lib/utils";
 // ============================================================================
 // Provider Context & Types
 // ============================================================================
@@ -300,14 +293,14 @@ export function PromptInputAttachment({
                   width={20}
                 />
               ) : (
-                <div className="flex size-5 items-center justify-center text-muted-foreground">
-                  <PaperclipIcon className="size-3" />
+                <div className="flex size-5 items-center justify-center font-mono text-muted-foreground text-xs">
+                  [📎]
                 </div>
               )}
             </div>
             <Button
               aria-label="Remove attachment"
-              className="absolute inset-0 size-5 cursor-pointer rounded p-0 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 [&>svg]:size-2.5"
+              className="absolute inset-0 size-5 cursor-pointer rounded p-0 font-mono text-xs opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100"
               onClick={(e) => {
                 e.stopPropagation();
                 attachments.remove(data.id);
@@ -315,7 +308,7 @@ export function PromptInputAttachment({
               type="button"
               variant="ghost"
             >
-              <XIcon />
+              [X]
               <span className="sr-only">Remove</span>
             </Button>
           </div>
@@ -395,7 +388,7 @@ export const PromptInputActionAddAttachments = ({
         attachments.openFileDialog();
       }}
     >
-      <ImageIcon className="mr-2 size-4" /> {label}
+      <span className="mr-2 font-mono">[📷]</span> {label}
     </DropdownMenuItem>
   );
 };
@@ -943,7 +936,7 @@ export const PromptInputActionMenuTrigger = ({
 }: PromptInputActionMenuTriggerProps) => (
   <DropdownMenuTrigger asChild>
     <PromptInputButton className={className} {...props}>
-      {children ?? <PlusIcon className="size-4" />}
+      {children ?? <span className="font-mono">[+]</span>}
     </PromptInputButton>
   </DropdownMenuTrigger>
 );
@@ -1161,7 +1154,7 @@ export const PromptInputSpeechButton = ({
       onClick={toggleListening}
       {...props}
     >
-      <MicIcon className="size-4" />
+      <span className="font-mono">[🎤]</span>
     </PromptInputButton>
   );
 };
@@ -1183,7 +1176,7 @@ export const PromptInputModelSelectTrigger = ({
   <SelectTrigger
     className={cn(
       "border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors",
-      'hover:bg-accent hover:text-foreground [&[aria-expanded="true"]]:bg-accent [&[aria-expanded="true"]]:text-foreground',
+      "hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground",
       className
     )}
     {...props}

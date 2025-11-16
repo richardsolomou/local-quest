@@ -4,7 +4,7 @@ import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "~/components/ui/alert-dialog";
+} from "@ras-sh/ui/alert-dialog";
 import { useBrowserAISupport } from "~/hooks/use-browser-ai-support";
 
 function isChromiumBrowser() {

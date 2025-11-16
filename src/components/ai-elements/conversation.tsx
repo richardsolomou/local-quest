@@ -1,10 +1,10 @@
 "use client";
 
+import { Button } from "@ras-sh/ui/button";
+import { cn } from "@ras-sh/ui/utils";
 import type { ComponentProps } from "react";
 import { useCallback } from "react";
 import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
 
 export type ConversationProps = ComponentProps<typeof StickToBottom>;
 
