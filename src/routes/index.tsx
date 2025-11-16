@@ -1,239 +1,173 @@
-import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Checkbox,
-  Input,
-} from "@ras-sh/ui";
+"use client";
+
+import { useChat } from "@ai-sdk/react";
+import type { BuiltInAIUIMessage } from "@built-in-ai/core";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import packageJson from "../../package.json" with { type: "json" };
+import { toast } from "sonner";
+import { ChatEmptyState } from "~/components/chat-empty-state";
+import { ChatInput } from "~/components/chat-input";
+import { ChatMessages } from "~/components/chat-messages";
+import { Footer } from "~/components/footer";
+import { Header } from "~/components/header";
+import { ModelDownloadBanner } from "~/components/model-download-banner";
+import { ClientSideChatTransport } from "~/lib/client-side-chat-transport";
+import { cn } from "~/lib/utils";
+import { useSuggestionsStore } from "~/stores/suggestions-store";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
 
-type Todo = {
-  id: string;
-  text: string;
-  isCompleted: boolean;
-};
+export default function Home() {
+  const [input, setInput] = useState("");
+  const [files, setFiles] = useState<FileList | undefined>(undefined);
+  const suggestions = useSuggestionsStore((state) => state.suggestions);
+  const [modelDownload, setModelDownload] = useState<{
+    status: "downloading" | "complete" | "error";
+    progress: number;
+    message: string;
+  } | null>(null);
 
-function TodoForm({ onAdd }: { onAdd: (text: string) => void }) {
-  const [newTodo, setNewTodo] = useState("");
+  const {
+    error,
+    status,
+    sendMessage,
+    messages,
+    regenerate,
+    stop,
+    setMessages,
+  } = useChat<BuiltInAIUIMessage>({
+    transport: new ClientSideChatTransport(),
+    onError(error) {
+      toast.error(error.message);
+    },
+    onData: (dataPart) => {
+      // Handle model download progress
+      if (dataPart.type === "data-modelDownloadProgress") {
+        setModelDownload({
+          status: dataPart.data.status,
+          progress: dataPart.data.progress ?? 0,
+          message: dataPart.data.message,
+        });
+        // Clear the download banner when complete
+        if (dataPart.data.status === "complete") {
+          setTimeout(() => setModelDownload(null), 500);
+        }
+        return;
+      }
+      // Handle transient notifications
+      if (dataPart.type === "data-notification") {
+        if (dataPart.data.level === "error") {
+          toast.error(dataPart.data.message);
+        } else if (dataPart.data.level === "warning") {
+          toast.warning(dataPart.data.message);
+        } else {
+          toast.info(dataPart.data.message);
+        }
+      }
+    },
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newTodo.trim()) {
-      onAdd(newTodo);
-      setNewTodo("");
+  const isLoading = status !== "ready";
+
+  // Send a message
+  const handleSubmit = () => {
+    // Allow submission when ready, or after an error/stop (not during submit/stream)
+    const canSubmit =
+      (input.trim() || files) &&
+      status !== "submitted" &&
+      status !== "streaming";
+
+    if (canSubmit) {
+      // Track message submission
+      window.umami?.track("message_submitted");
+
+      sendMessage({
+        text: input,
+        files,
+      });
+      setInput("");
+      setFiles(undefined);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    // Allow submission when not actively submitting or streaming
+    if (status !== "submitted" && status !== "streaming") {
+      sendMessage({
+        text: suggestion,
+        files,
+      });
+      setInput("");
+      setFiles(undefined);
+    }
+  };
+
+  const handleClearConversation = () => {
+    // Stop any ongoing generation
+    if (status === "submitted" || status === "streaming") {
+      stop();
+      setTimeout(() => setMessages([]), 100);
+    } else {
+      setMessages([]);
     }
   };
 
   return (
-    <form className="flex gap-4" onSubmit={handleSubmit}>
-      <Input
-        className="flex-1"
-        onChange={(e) => setNewTodo(e.target.value)}
-        placeholder="What needs to be done?"
-        value={newTodo}
-      />
-      <Button size="default" type="submit">
-        Add Todo
-      </Button>
-    </form>
-  );
-}
+    <div className="relative flex h-screen w-full flex-col overflow-hidden">
+      <Header />
 
-function TodoItem({
-  todo,
-  onToggle,
-  onDelete,
-}: {
-  todo: Todo;
-  onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
-}) {
-  return (
-    <div className="group flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900/50 p-4 transition-colors hover:border-zinc-700 hover:bg-zinc-900/70">
-      <Checkbox
-        checked={todo.isCompleted}
-        onCheckedChange={() => onToggle(todo.id)}
-      />
-      <span
-        className={`flex-1 text-sm transition-colors ${
-          todo.isCompleted ? "text-zinc-500 line-through" : "text-zinc-200"
-        }`}
-      >
-        {todo.text}
-      </span>
-      <Button
-        className="opacity-0 transition-opacity group-hover:opacity-100"
-        onClick={() => onDelete(todo.id)}
-        size="sm"
-        variant="ghost"
-      >
-        Delete
-      </Button>
-    </div>
-  );
-}
-
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-zinc-800 border-dashed bg-zinc-900/30 py-12">
-      <p className="font-medium text-sm text-zinc-400">No todos yet</p>
-      <p className="text-xs text-zinc-500">
-        Add your first todo to get started
-      </p>
-    </div>
-  );
-}
-
-function TodoList({
-  todos,
-  onToggle,
-  onDelete,
-}: {
-  todos: Todo[];
-  onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
-}) {
-  if (todos.length === 0) {
-    return <EmptyState />;
-  }
-
-  return (
-    <div className="space-y-2">
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          onDelete={onDelete}
-          onToggle={onToggle}
-          todo={todo}
+      {/* Model Download Banner - Absolutely positioned */}
+      {modelDownload && (
+        <ModelDownloadBanner
+          message={modelDownload.message}
+          progress={modelDownload.progress}
+          status={modelDownload.status}
         />
-      ))}
-    </div>
-  );
-}
+      )}
 
-export default function Home() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  const addTodo = (text: string) => {
-    const newTodo: Todo = {
-      id: Date.now().toString(),
-      text,
-      isCompleted: false,
-    };
-    setTodos([...todos, newTodo]);
-  };
-
-  const toggleTodo = (id: string) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
-      )
-    );
-  };
-
-  const deleteTodo = (id: string) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  return (
-    <div className="mx-auto max-w-3xl space-y-8 px-8 py-12 sm:space-y-16 md:py-20">
-      <main className="space-y-16">
-        <section>
-          <div className="mb-4 flex items-center gap-2">
-            <Badge variant="secondary">Template</Badge>
-            <Badge variant="outline">v{packageJson.version}</Badge>
-          </div>
-          <h1 className="mb-8 font-bold text-4xl tracking-tight">
-            🚀 ras.sh TanStack Start Template
-          </h1>
-
-          <div className="space-y-4">
-            <p className="text-lg text-zinc-300 leading-relaxed">
-              A production-ready template for building full-stack applications
-              with{" "}
-              <a
-                className="underline transition-colors hover:text-zinc-100"
-                href="https://tanstack.com/start"
-                rel="noopener"
-                target="_blank"
-              >
-                TanStack Start
-              </a>
-              . Configured with best practices and modern tooling.
-            </p>
-            <p className="text-sm text-zinc-400">
-              Start building by editing{" "}
-              <code className="rounded bg-zinc-800 px-2 py-1 text-sm">
-                src/routes/index.tsx
-              </code>
-            </p>
-          </div>
-        </section>
-
-        <section>
-          <Card className="border-zinc-800">
-            <CardHeader className="border-zinc-800 border-b pb-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-xl">Todo List</CardTitle>
-                  <CardDescription className="mt-1.5">
-                    A simple todo list to showcase the UI components
-                  </CardDescription>
-                </div>
-                {todos.length > 0 && (
-                  <Badge className="text-xs" variant="secondary">
-                    {todos.filter((t) => !t.isCompleted).length} active
-                  </Badge>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <TodoForm onAdd={addTodo} />
-                <TodoList
-                  onDelete={deleteTodo}
-                  onToggle={toggleTodo}
-                  todos={todos}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        <section>
-          <h2 className="mb-6 border-zinc-800/50 border-b pb-2 font-bold text-2xl text-zinc-100">
-            Learn More
-          </h2>
-          <div className="space-y-3 text-zinc-300">
-            <a
-              className="block underline transition-colors hover:text-zinc-100"
-              href="https://tanstack.com/start/latest/docs/framework/react/overview"
-              rel="noopener"
-              target="_blank"
-            >
-              TanStack Start Documentation →
-            </a>
-            <a
-              className="block underline transition-colors hover:text-zinc-100"
-              href="https://ras.sh"
-              rel="noopener"
-              target="_blank"
-            >
-              More templates by ras.sh →
-            </a>
-          </div>
-        </section>
+      {/* Main Content */}
+      <main
+        className={cn(
+          "relative mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col",
+          messages.length === 0 && "items-center justify-center"
+        )}
+      >
+        {messages.length === 0 ? (
+          <ChatEmptyState onSuggestionClick={handleSuggestionClick} />
+        ) : (
+          <ChatMessages
+            error={error}
+            messages={messages}
+            onRegenerate={regenerate}
+            status={status}
+          />
+        )}
       </main>
+
+      {/* Footer */}
+      <footer className="sticky bottom-0 z-20">
+        <div className="mx-auto w-full max-w-3xl space-y-4 p-4">
+          <ChatInput
+            files={files}
+            hasMessages={messages.length > 0}
+            input={input}
+            isLoading={isLoading}
+            onClearConversation={handleClearConversation}
+            onFilesChange={setFiles}
+            onInputChange={setInput}
+            onSubmit={handleSubmit}
+            onSuggestionClick={handleSuggestionClick}
+            showSuggestions={messages.length > 0}
+            status={status}
+            stop={stop}
+            suggestions={suggestions}
+          />
+
+          <Footer />
+        </div>
+      </footer>
     </div>
   );
 }
