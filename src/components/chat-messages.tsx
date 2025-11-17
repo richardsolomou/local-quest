@@ -7,6 +7,7 @@ import {
   ConversationScrollButton,
 } from "~/components/ai-elements/conversation";
 import { Response } from "~/components/ai-elements/response";
+import { Spinner } from "~/components/spinner";
 
 type ChatMessagesProps = {
   messages: BuiltInAIUIMessage[];
@@ -88,12 +89,7 @@ export function ChatMessages({
           {/* Loading State */}
           {status === "submitted" && (
             <div className="flex items-center gap-2 text-zinc-500">
-              <span>&gt;</span>
-              <div className="flex items-center gap-1.5">
-                <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-500 [animation-delay:-0.3s]" />
-                <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-500 [animation-delay:-0.15s]" />
-                <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-500" />
-              </div>
+              <Spinner />
             </div>
           )}
 

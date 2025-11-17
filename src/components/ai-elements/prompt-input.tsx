@@ -743,7 +743,9 @@ export const PromptInput = ({
         onSubmit={handleSubmit}
         {...props}
       >
-        <InputGroup className="rounded-none">{children}</InputGroup>
+        <InputGroup className="border! rounded-none! border-zinc-800! bg-zinc-900/30! focus-within:border-primary! focus-within:outline-none! focus-within:ring-1! focus-within:ring-primary/20!">
+          {children}
+        </InputGroup>
       </form>
     </>
   );
@@ -845,7 +847,10 @@ export function PromptInputTextarea({
 
   return (
     <InputGroupTextarea
-      className={cn("field-sizing-content max-h-48 min-h-16", className)}
+      className={cn(
+        "field-sizing-content max-h-48 min-h-16 rounded-none border-0 bg-transparent font-mono text-sm text-zinc-300 placeholder:text-zinc-600 focus:outline-none focus:ring-0",
+        className
+      )}
       name="message"
       onCompositionEnd={() => setIsComposing(false)}
       onCompositionStart={() => setIsComposing(true)}
