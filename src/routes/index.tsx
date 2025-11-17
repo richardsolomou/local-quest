@@ -27,12 +27,7 @@ export default function Home() {
                 <h1 className="font-bold text-3xl text-zinc-100 sm:text-4xl">
                   local-quest.ras.sh
                 </h1>
-                <Button
-                  asChild
-                  className="rounded-none font-mono"
-                  size="sm"
-                  variant="outline"
-                >
+                <Button asChild className="rounded-none" variant="outline">
                   <a
                     data-umami-event="github_link_clicked"
                     data-umami-event-location="intro_screen"
