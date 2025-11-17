@@ -12,11 +12,11 @@ import { ModelDownloadBanner } from "~/components/model-download-banner";
 import { ClientSideChatTransport } from "~/lib/client-side-chat-transport";
 import { useWorldStore } from "~/stores/world-store";
 
-export const Route = createFileRoute("/chat")({
-  component: Chat,
+export const Route = createFileRoute("/adventure")({
+  component: Adventure,
 });
 
-export default function Chat() {
+export default function Adventure() {
   const { worldData, initialMessage } = useWorldStore();
   const [input, setInput] = useState("");
   const [modelDownload, setModelDownload] = useState<{
@@ -74,7 +74,7 @@ export default function Chat() {
       messages.length === 0 &&
       !hasAddedInitialRef.current
     ) {
-      console.log("Adding initial message to chat:", initialMessage);
+      console.log("Adding initial message to adventure:", initialMessage);
       hasAddedInitialRef.current = true;
       setMessages([
         {

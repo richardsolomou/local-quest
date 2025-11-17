@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorldSelectionRouteImport } from './routes/world-selection'
-import { Route as ChatRouteImport } from './routes/chat'
+import { Route as AdventureRouteImport } from './routes/adventure'
 import { Route as IndexRouteImport } from './routes/index'
 
 const WorldSelectionRoute = WorldSelectionRouteImport.update({
@@ -18,9 +18,9 @@ const WorldSelectionRoute = WorldSelectionRouteImport.update({
   path: '/world-selection',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ChatRoute = ChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
+const AdventureRoute = AdventureRouteImport.update({
+  id: '/adventure',
+  path: '/adventure',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,31 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/adventure': typeof AdventureRoute
   '/world-selection': typeof WorldSelectionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/adventure': typeof AdventureRoute
   '/world-selection': typeof WorldSelectionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/chat': typeof ChatRoute
+  '/adventure': typeof AdventureRoute
   '/world-selection': typeof WorldSelectionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/world-selection'
+  fullPaths: '/' | '/adventure' | '/world-selection'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/world-selection'
-  id: '__root__' | '/' | '/chat' | '/world-selection'
+  to: '/' | '/adventure' | '/world-selection'
+  id: '__root__' | '/' | '/adventure' | '/world-selection'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ChatRoute: typeof ChatRoute
+  AdventureRoute: typeof AdventureRoute
   WorldSelectionRoute: typeof WorldSelectionRoute
 }
 
@@ -68,11 +68,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorldSelectionRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/chat': {
-      id: '/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ChatRouteImport
+    '/adventure': {
+      id: '/adventure'
+      path: '/adventure'
+      fullPath: '/adventure'
+      preLoaderRoute: typeof AdventureRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,7 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ChatRoute: ChatRoute,
+  AdventureRoute: AdventureRoute,
   WorldSelectionRoute: WorldSelectionRoute,
 }
 export const routeTree = rootRouteImport
