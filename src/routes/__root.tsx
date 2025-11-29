@@ -7,9 +7,9 @@ import type * as React from "react";
 import { Toaster } from "sonner";
 import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
 import { NotFound } from "~/components/not-found";
+import { PHProvider } from "~/components/ph-provider";
 import { seo } from "~/lib/seo";
 import appCss from "~/styles/app.css?url";
-import { PHProvider } from "~/components/ph-provider";
 
 export const Route = createRootRoute({
   head: () => ({
