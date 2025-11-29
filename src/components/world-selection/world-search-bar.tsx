@@ -24,7 +24,7 @@ export function WorldSearchBar({
         value={searchQuery}
       />
       <Button
-        className="h-10 shrink-0 rounded-none font-mono"
+        className="h-10 shrink-0 font-mono"
         disabled={disabled}
         onClick={onRandomSelect}
         size="sm"

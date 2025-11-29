@@ -24,7 +24,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
             <h1 className="font-bold text-2xl text-zinc-100">
               &gt; Error Occurred
             </h1>
-            <div className="rounded border border-red-500/20 bg-red-500/10 p-4 font-mono">
+            <div className="border border-red-500/20 bg-red-500/10 p-4 font-mono">
               <div className="text-red-400 text-sm">
                 <ErrorComponent error={error} />
               </div>
@@ -32,7 +32,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <Button
-              className="rounded-none font-mono"
+              className="font-mono"
               onClick={() => {
                 router.invalidate();
               }}
@@ -42,13 +42,13 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
               &gt; Try Again
             </Button>
             {isRoot ? (
-              <Button asChild className="rounded-none font-mono">
+              <Button asChild className="font-mono">
                 <Link to="/">&gt; Home</Link>
               </Button>
             ) : (
               <Button
                 asChild
-                className="rounded-none font-mono"
+                className="font-mono"
                 onClick={(e) => {
                   e.preventDefault();
                   window.history.back();

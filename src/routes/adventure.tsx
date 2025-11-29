@@ -2,6 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import type { BuiltInAIUIMessage } from "@built-in-ai/core";
+import { usePostHog } from "@posthog/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -24,7 +25,7 @@ export default function Adventure() {
     progress: number;
     message: string;
   } | null>(null);
-
+  const posthog = usePostHog();
   const {
     error,
     status,
@@ -99,7 +100,7 @@ export default function Adventure() {
 
     if (canSubmit) {
       // Track message submission
-      window.umami?.track("message_submitted");
+      posthog?.capture("message_submitted");
 
       sendMessage({
         text: input,
@@ -111,7 +112,7 @@ export default function Adventure() {
   return (
     <div className="relative flex h-screen w-full flex-col overflow-hidden bg-background p-6">
       {/* Model Download Banner - Absolutely positioned */}
-      {modelDownload && (
+      {!!modelDownload && (
         <ModelDownloadBanner
           message={modelDownload.message}
           progress={modelDownload.progress}

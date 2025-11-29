@@ -20,6 +20,6 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: ["streamdown"],
+    noExternal: ["streamdown", "posthog-js", "@posthog/react"],
   },
 });

@@ -60,20 +60,13 @@ export function ChatInput({
         <PromptInputFooter className="justify-end">
           <PromptInputSubmit
             className="font-mono"
-            data-umami-event={
-              status === "submitted" || status === "streaming"
-                ? "message_stopped"
-                : undefined
-            }
             disabled={
               status === "submitted" || status === "streaming"
                 ? false
                 : isDisabled || !input.trim()
             }
             onClick={
-              status === "submitted" || status === "streaming"
-                ? stop
-                : undefined
+              status === "submitted" || status === "streaming" ? stop : () => {}
             }
             status={status}
             type={

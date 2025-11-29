@@ -180,7 +180,7 @@ export default function WorldSelection() {
             {/* Start Adventure Button */}
             <div className="flex justify-center pt-4">
               <Button
-                className="w-full rounded-none font-mono md:w-auto"
+                className="w-full font-mono md:w-auto"
                 disabled={
                   !canStartAdventure || isGenerating || isTransformingPrompt
                 }

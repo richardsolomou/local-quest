@@ -1,6 +1,7 @@
 "use client";
 
 import { SiGithub } from "@icons-pack/react-simple-icons";
+import { usePostHog } from "@posthog/react";
 import { Button } from "@ras-sh/ui/button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BrowserUnsupportedDialog } from "~/components/browser-unsupported-dialog";
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/")({
 
 export default function Home() {
   const navigate = useNavigate();
+  const posthog = usePostHog();
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background">
@@ -27,11 +29,14 @@ export default function Home() {
                 <h1 className="font-bold text-3xl text-zinc-100 sm:text-4xl">
                   local-quest.ras.sh
                 </h1>
-                <Button asChild className="rounded-none" variant="outline">
+                <Button asChild variant="outline">
                   <a
-                    data-umami-event="github_link_clicked"
-                    data-umami-event-location="intro_screen"
-                    href="https://github.com/ras-sh/local-quest"
+                    href="https://github.com/richardsolomou/local-quest"
+                    onClick={() =>
+                      posthog?.capture("github_link_clicked", {
+                        location: "intro_screen",
+                      })
+                    }
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -56,7 +61,7 @@ export default function Home() {
 
             <div className="flex justify-center pt-4">
               <Button
-                className="w-full rounded-none font-mono md:w-auto"
+                className="w-full font-mono md:w-auto"
                 onClick={() => navigate({ to: "/world-selection" })}
                 size="lg"
               >

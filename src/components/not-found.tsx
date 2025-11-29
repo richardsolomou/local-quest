@@ -21,14 +21,14 @@ export function NotFound({ children }: { children?: React.ReactNode }) {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <Button
-              className="rounded-none font-mono"
+              className="font-mono"
               onClick={() => window.history.back()}
               type="button"
               variant="outline"
             >
               &gt; Go Back
             </Button>
-            <Button asChild className="rounded-none font-mono">
+            <Button asChild className="font-mono">
               <Link to="/">&gt; Start Over</Link>
             </Button>
           </div>

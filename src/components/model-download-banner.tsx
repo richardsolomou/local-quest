@@ -36,9 +36,9 @@ export function ModelDownloadBanner({
               )}
             </div>
             {status === "downloading" && (
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+              <div className="h-1.5 w-full overflow-hidden bg-zinc-800">
                 <div
-                  className="h-full rounded-full bg-zinc-100 transition-all duration-300"
+                  className="h-full bg-zinc-100 transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>

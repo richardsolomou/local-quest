@@ -276,14 +276,14 @@ export function PromptInputAttachment({
       <HoverCardTrigger asChild>
         <div
           className={cn(
-            "group relative flex h-8 cursor-default select-none items-center gap-1.5 rounded-none border border-border px-1.5 font-medium text-sm transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+            "group relative flex h-8 cursor-default select-none items-center gap-1.5 border border-border px-1.5 font-medium text-sm transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
             className
           )}
           key={data.id}
           {...props}
         >
           <div className="relative size-5 shrink-0">
-            <div className="absolute inset-0 flex size-5 items-center justify-center overflow-hidden rounded-none bg-background transition-opacity group-hover:opacity-0">
+            <div className="absolute inset-0 flex size-5 items-center justify-center overflow-hidden bg-background transition-opacity group-hover:opacity-0">
               {isImage ? (
                 <img
                   alt={filename || "attachment"}
@@ -300,7 +300,7 @@ export function PromptInputAttachment({
             </div>
             <Button
               aria-label="Remove attachment"
-              className="absolute inset-0 size-5 cursor-pointer rounded-none p-0 font-mono text-xs opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100"
+              className="absolute inset-0 size-5 cursor-pointer p-0 font-mono text-xs opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100"
               onClick={(e) => {
                 e.stopPropagation();
                 attachments.remove(data.id);
@@ -318,8 +318,8 @@ export function PromptInputAttachment({
       </HoverCardTrigger>
       <PromptInputHoverCardContent className="w-auto p-2">
         <div className="w-auto space-y-3">
-          {isImage && (
-            <div className="flex max-h-96 w-96 items-center justify-center overflow-hidden rounded-none border">
+          {!!isImage && (
+            <div className="flex max-h-96 w-96 items-center justify-center overflow-hidden border">
               <img
                 alt={filename || "attachment preview"}
                 className="max-h-full max-w-full object-contain"
@@ -334,7 +334,7 @@ export function PromptInputAttachment({
               <h4 className="truncate font-semibold text-sm leading-none">
                 {filename || (isImage ? "Image" : "Attachment")}
               </h4>
-              {data.mediaType && (
+              {!!data.mediaType && (
                 <p className="truncate font-mono text-muted-foreground text-xs">
                   {data.mediaType}
                 </p>
@@ -743,7 +743,7 @@ export const PromptInput = ({
         onSubmit={handleSubmit}
         {...props}
       >
-        <InputGroup className="border! rounded-none! border-zinc-800! bg-zinc-900/30! focus-within:border-primary! focus-within:outline-none! focus-within:ring-1! focus-within:ring-primary/20!">
+        <InputGroup className="border! border-zinc-800! bg-zinc-900/30! focus-within:border-primary! focus-within:outline-none! focus-within:ring-1! focus-within:ring-primary/20!">
           {children}
         </InputGroup>
       </form>
@@ -848,7 +848,7 @@ export function PromptInputTextarea({
   return (
     <InputGroupTextarea
       className={cn(
-        "field-sizing-content max-h-48 min-h-16 rounded-none border-0 bg-transparent font-mono text-sm text-zinc-300 placeholder:text-zinc-600 focus:outline-none focus:ring-0",
+        "field-sizing-content max-h-48 min-h-16 border-0 bg-transparent font-mono text-sm text-zinc-300 placeholder:text-zinc-600 focus:outline-none focus:ring-0",
         className
       )}
       name="message"
@@ -940,7 +940,7 @@ export const PromptInputActionMenuTrigger = ({
   ...props
 }: PromptInputActionMenuTriggerProps) => (
   <DropdownMenuTrigger asChild>
-    <PromptInputButton className={cn("rounded-none", className)} {...props}>
+    <PromptInputButton className={cn(className)} {...props}>
       {children ?? <span className="font-mono">[+]</span>}
     </PromptInputButton>
   </DropdownMenuTrigger>
@@ -994,7 +994,7 @@ export const PromptInputSubmit = ({
   return (
     <InputGroupButton
       aria-label="Submit"
-      className={cn("rounded-none", className)}
+      className={cn(className)}
       size={size}
       type="submit"
       variant={variant}
@@ -1152,7 +1152,7 @@ export const PromptInputSpeechButton = ({
     <PromptInputButton
       className={cn(
         "relative transition-all duration-200",
-        isListening && "animate-pulse bg-accent text-accent-foreground",
+        !!isListening && "animate-pulse bg-accent text-accent-foreground",
         className
       )}
       disabled={!recognition}

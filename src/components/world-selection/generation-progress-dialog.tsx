@@ -31,10 +31,7 @@ export function GenerationProgressDialog({
 
   return (
     <Dialog open={isOpen}>
-      <DialogContent
-        className="max-w-xl rounded-none font-mono"
-        showCloseButton={false}
-      >
+      <DialogContent className="max-w-xl font-mono" showCloseButton={false}>
         <DialogHeader>
           <DialogTitle className="font-mono text-xl text-zinc-100">
             &gt; Generating Your World
@@ -100,7 +97,7 @@ export function GenerationProgressDialog({
                       >
                         {field.label}
                       </span>
-                      {isCurrent && (
+                      {!!isCurrent && (
                         <span className="shrink-0 whitespace-nowrap text-xs text-zinc-500">
                           &gt; Generating...
                         </span>
@@ -145,8 +142,8 @@ export function GenerationProgressDialog({
           </div>
 
           {/* Completion Message */}
-          {allWorldFieldsComplete &&
-            isInitialMessageComplete &&
+          {!!allWorldFieldsComplete &&
+            !!isInitialMessageComplete &&
             !currentField && (
               <div className="border-zinc-800 border-t pt-3">
                 <div className="flex items-center gap-2 border border-green-900/50 bg-green-900/10 p-3 font-mono text-sm">
