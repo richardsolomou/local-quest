@@ -47,7 +47,7 @@
     "@ras-sh/ui": "^0.0.6",
     "@tanstack/react-router": "^1.159.5",
     "@tanstack/react-start": "^1.159.5",
-    "ai": "^5.0.104",
+    "ai": "^6.0.86",
     "fuse.js": "^7.1.0",
     "nanoid": "^5.1.6",
     "posthog-js": "^1.345.0",
