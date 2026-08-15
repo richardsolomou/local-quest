@@ -22,8 +22,7 @@ export function GenerationProgressDialog({
   isInitialMessageComplete,
 }: GenerationProgressDialogProps) {
   const totalFields = WORLD_FIELDS.length + 1; // +1 for opening scene
-  const completedCount =
-    completedFields.size + (isInitialMessageComplete ? 1 : 0);
+  const completedCount = completedFields.size + (isInitialMessageComplete ? 1 : 0);
   const progressPercentage = Math.round((completedCount / totalFields) * 100);
 
   // Check if all world fields are complete
@@ -46,9 +45,7 @@ export function GenerationProgressDialog({
           <div className="border border-zinc-800 bg-zinc-900/30 p-3">
             <div className="mb-2 flex items-center justify-between font-mono text-xs text-zinc-400">
               <span>&gt; Progress</span>
-              <span className="font-semibold text-zinc-300">
-                {progressPercentage}%
-              </span>
+              <span className="font-semibold text-zinc-300">{progressPercentage}%</span>
             </div>
             <div className="h-1 w-full bg-zinc-900">
               <div
@@ -60,19 +57,14 @@ export function GenerationProgressDialog({
 
           {/* World Data */}
           <div>
-            <h3 className="mb-2 font-mono font-semibold text-sm text-zinc-300">
-              &gt; World Data:
-            </h3>
+            <h3 className="mb-2 font-mono font-semibold text-sm text-zinc-300">&gt; World Data:</h3>
             <div className="border border-zinc-800 bg-zinc-900/30 p-3 font-mono">
               <div className="space-y-1">
                 {WORLD_FIELDS.map((field) => {
                   const isComplete = completedFields.has(field.key);
                   const isCurrent = currentField === field.key && !isComplete;
                   return (
-                    <div
-                      className="flex items-center gap-2 text-sm"
-                      key={field.key}
-                    >
+                    <div className="flex items-center gap-2 text-sm" key={field.key}>
                       <span className="shrink-0 whitespace-nowrap font-mono">
                         {isComplete ? (
                           <span className="text-green-500">[✓]</span>
@@ -81,9 +73,7 @@ export function GenerationProgressDialog({
                             [<Spinner />]
                           </span>
                         ) : (
-                          <span className="whitespace-nowrap text-zinc-700">
-                            [ ]
-                          </span>
+                          <span className="whitespace-nowrap text-zinc-700">[ ]</span>
                         )}
                       </span>
                       <span
@@ -115,9 +105,7 @@ export function GenerationProgressDialog({
                         [<Spinner />]
                       </span>
                     ) : (
-                      <span className="whitespace-nowrap text-zinc-700">
-                        [ ]
-                      </span>
+                      <span className="whitespace-nowrap text-zinc-700">[ ]</span>
                     )}
                   </span>
                   <span
@@ -142,17 +130,15 @@ export function GenerationProgressDialog({
           </div>
 
           {/* Completion Message */}
-          {!!allWorldFieldsComplete &&
-            !!isInitialMessageComplete &&
-            !currentField && (
-              <div className="border-zinc-800 border-t pt-3">
-                <div className="flex items-center gap-2 border border-green-900/50 bg-green-900/10 p-3 font-mono text-sm">
-                  <span className="min-w-0 flex-1 text-green-400">
-                    &gt; World generation complete! Starting adventure...
-                  </span>
-                </div>
+          {!!allWorldFieldsComplete && !!isInitialMessageComplete && !currentField && (
+            <div className="border-zinc-800 border-t pt-3">
+              <div className="flex items-center gap-2 border border-green-900/50 bg-green-900/10 p-3 font-mono text-sm">
+                <span className="min-w-0 flex-1 text-green-400">
+                  &gt; World generation complete! Starting adventure...
+                </span>
               </div>
-            )}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

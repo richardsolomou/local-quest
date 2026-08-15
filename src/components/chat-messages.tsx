@@ -17,12 +17,7 @@ type ChatMessagesProps = {
   onRegenerate: () => void;
 };
 
-export function ChatMessages({
-  messages,
-  status,
-  error,
-  onRegenerate,
-}: ChatMessagesProps) {
+export function ChatMessages({ messages, status, error, onRegenerate }: ChatMessagesProps) {
   const posthog = usePostHog();
 
   return (
@@ -61,22 +56,13 @@ export function ChatMessages({
                     }
                     if (part.mediaType?.startsWith("audio/")) {
                       return (
-                        <div
-                          className="mb-3 space-y-2"
-                          key={`${message.id}-${i}`}
-                        >
-                          <audio
-                            className="w-full max-w-md"
-                            controls
-                            src={part.url}
-                          >
+                        <div className="mb-3 space-y-2" key={`${message.id}-${i}`}>
+                          <audio className="w-full max-w-md" controls src={part.url}>
                             <track kind="captions" />
                             Your browser does not support the audio element.
                           </audio>
                           {!!part.filename && (
-                            <p className="text-sm text-zinc-400">
-                              {part.filename}
-                            </p>
+                            <p className="text-sm text-zinc-400">{part.filename}</p>
                           )}
                         </div>
                       );

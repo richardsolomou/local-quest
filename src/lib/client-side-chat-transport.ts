@@ -57,9 +57,7 @@ const responseSchema = z.object({
  *
  * @implements {ChatTransport<BuiltInAIUIMessage>}
  */
-export class ClientSideChatTransport
-  implements ChatTransport<BuiltInAIUIMessage>
-{
+export class ClientSideChatTransport implements ChatTransport<BuiltInAIUIMessage> {
   /**
    * Initialize and return the base model.
    */
@@ -204,7 +202,7 @@ export class ClientSideChatTransport
     } & {
       trigger: "submit-message" | "submit-tool-result" | "regenerate-message";
       messageId: string | undefined;
-    } & ChatRequestOptions
+    } & ChatRequestOptions,
   ): Promise<ReadableStream<UIMessageChunk>> {
     const { messages, abortSignal } = options;
 
@@ -243,8 +241,7 @@ export class ClientSideChatTransport
                   id: downloadProgressId,
                   status: "complete",
                   progress: 100,
-                  message:
-                    "Model finished downloading! Getting ready for inference...",
+                  message: "Model finished downloading! Getting ready for inference...",
                 });
               }
               return;

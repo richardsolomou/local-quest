@@ -39,7 +39,7 @@ export function SeedPromptList({
     // Small delay to ensure DOM has updated after search query changes
     const timeoutId = setTimeout(() => {
       const selectedButton = scrollContainerRef.current?.querySelector(
-        `[data-seed-prompt="${CSS.escape(selectedSeed)}"]`
+        `[data-seed-prompt="${CSS.escape(selectedSeed)}"]`,
       ) as HTMLElement;
       if (selectedButton) {
         selectedButton.scrollIntoView({
@@ -55,24 +55,17 @@ export function SeedPromptList({
 
   return (
     <div className="space-y-3">
-      <h2 className="font-semibold text-lg text-zinc-300">
-        &gt; Available Worlds:
-      </h2>
+      <h2 className="font-semibold text-lg text-zinc-300">&gt; Available Worlds:</h2>
       <WorldSearchBar
         disabled={disabled}
         onRandomSelect={onRandomSelect}
         onSearchChange={onSearchChange}
         searchQuery={searchQuery}
       />
-      <div
-        className="max-h-96 space-y-2 overflow-y-auto pr-2"
-        ref={scrollContainerRef}
-      >
+      <div className="max-h-96 space-y-2 overflow-y-auto pr-2" ref={scrollContainerRef}>
         {filteredSeedPrompts.length > 0 ? (
           filteredSeedPrompts.map((seed) => {
-            const originalIndex = SEED_PROMPTS.findIndex(
-              (s) => s.prompt === seed.prompt
-            );
+            const originalIndex = SEED_PROMPTS.findIndex((s) => s.prompt === seed.prompt);
             return (
               <SeedPromptItem
                 disabled={disabled}

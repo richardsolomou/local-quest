@@ -7,7 +7,7 @@ const initialMessageSchema = z.object({
   openingScene: z
     .string()
     .describe(
-      "The opening scene of the text adventure. Write in second person ('you', 'your'). Keep it concise - 2-3 short paragraphs maximum. Set the stage, describe the starting location and initial situation, and present the player with their first meaningful choice or action."
+      "The opening scene of the text adventure. Write in second person ('you', 'your'). Keep it concise - 2-3 short paragraphs maximum. Set the stage, describe the starting location and initial situation, and present the player with their first meaningful choice or action.",
     ),
 });
 
@@ -23,7 +23,7 @@ export type InitialMessageProgress = {
  */
 export async function generateInitialMessage(
   worldData: WorldData,
-  onProgress?: (progress: InitialMessageProgress) => void
+  onProgress?: (progress: InitialMessageProgress) => void,
 ): Promise<string> {
   const model = builtInAI();
 
@@ -63,9 +63,7 @@ ${
 
 ${
   worldData.items && worldData.items.length > 0
-    ? `\nItems of note:\n${worldData.items
-        .map((i) => `- ${i.name}: ${i.description}`)
-        .join("\n")}`
+    ? `\nItems of note:\n${worldData.items.map((i) => `- ${i.name}: ${i.description}`).join("\n")}`
     : ""
 }
 

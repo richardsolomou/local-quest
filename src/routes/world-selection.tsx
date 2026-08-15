@@ -26,12 +26,9 @@ export default function WorldSelection() {
   const [selectedSeed, setSelectedSeed] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [completedFields, setCompletedFields] = useState<Set<string>>(
-    new Set()
-  );
+  const [completedFields, setCompletedFields] = useState<Set<string>>(new Set());
   const [currentField, setCurrentField] = useState<string | undefined>();
-  const [isInitialMessageComplete, setIsInitialMessageComplete] =
-    useState(false);
+  const [isInitialMessageComplete, setIsInitialMessageComplete] = useState(false);
   const [isTransformingPrompt, setIsTransformingPrompt] = useState(false);
   const { setWorldData, setSeedPrompt, setInitialMessage } = useWorldStore();
 
@@ -44,7 +41,7 @@ export default function WorldSelection() {
         includeScore: true,
         minMatchCharLength: 1,
       }),
-    []
+    [],
   );
 
   // Filter seed prompts based on search query using Fuse.js
@@ -82,16 +79,13 @@ export default function WorldSelection() {
       console.log("📖 Starting initial message generation...");
       setIsInitialMessageComplete(false);
       setCurrentField("openingScene");
-      const initialMessage = await generateInitialMessage(
-        worldData,
-        (progress) => {
-          setIsInitialMessageComplete(progress.isComplete);
-          // Clear currentField as soon as we mark it complete
-          if (progress.isComplete) {
-            setCurrentField(undefined);
-          }
+      const initialMessage = await generateInitialMessage(worldData, (progress) => {
+        setIsInitialMessageComplete(progress.isComplete);
+        // Clear currentField as soon as we mark it complete
+        if (progress.isComplete) {
+          setCurrentField(undefined);
         }
-      );
+      });
       console.log("✅ Initial message generated:", initialMessage);
 
       // Store initial message in world store
@@ -109,9 +103,7 @@ export default function WorldSelection() {
     } catch (error) {
       console.error("❌ Error generating world:", error);
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to generate world. Please try again."
+        error instanceof Error ? error.message : "Failed to generate world. Please try again.",
       );
       setIsGenerating(false);
       setCompletedFields(new Set());
@@ -139,8 +131,7 @@ export default function WorldSelection() {
     setSelectedSeed(null);
   };
 
-  const canStartAdventure =
-    selectedSeed !== null || customPrompt.trim().length > 0;
+  const canStartAdventure = selectedSeed !== null || customPrompt.trim().length > 0;
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background">
@@ -153,9 +144,7 @@ export default function WorldSelection() {
           <div className="w-full max-w-2xl space-y-6">
             {/* Title */}
             <div className="space-y-2">
-              <h1 className="font-bold text-2xl text-zinc-100">
-                &gt; Choose Your World
-              </h1>
+              <h1 className="font-bold text-2xl text-zinc-100">&gt; Choose Your World</h1>
               <p className="text-zinc-400">
                 &gt; Select a seed prompt or create your own custom world.
               </p>
@@ -181,9 +170,7 @@ export default function WorldSelection() {
             <div className="flex justify-center pt-4">
               <Button
                 className="w-full font-mono md:w-auto"
-                disabled={
-                  !canStartAdventure || isGenerating || isTransformingPrompt
-                }
+                disabled={!canStartAdventure || isGenerating || isTransformingPrompt}
                 onClick={async () => {
                   console.log("🔘 Button clicked!", {
                     selectedSeed,
@@ -207,7 +194,7 @@ export default function WorldSelection() {
                       toast.error(
                         error instanceof Error
                           ? error.message
-                          : "Failed to process prompt. Please try again."
+                          : "Failed to process prompt. Please try again.",
                       );
                       return;
                     } finally {

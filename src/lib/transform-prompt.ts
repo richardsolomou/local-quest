@@ -6,12 +6,12 @@ const promptAnalysisSchema = z.object({
   needsTransformation: z
     .boolean()
     .describe(
-      "Whether the input needs to be transformed into a proper text adventure game prompt. Set to true if the input is a short description, game title, or concept that needs expansion. Set to false if it's already a complete prompt."
+      "Whether the input needs to be transformed into a proper text adventure game prompt. Set to true if the input is a short description, game title, or concept that needs expansion. Set to false if it's already a complete prompt.",
     ),
   transformedPrompt: z
     .string()
     .describe(
-      "The transformed prompt ready for world generation. If needsTransformation is false, this should be the original input. If true, this should be a complete prompt starting with 'You are a text adventure game...' that captures the essence of the input."
+      "The transformed prompt ready for world generation. If needsTransformation is false, this should be the original input. If true, this should be a complete prompt starting with 'You are a text adventure game...' that captures the essence of the input.",
     ),
 });
 
@@ -43,9 +43,7 @@ export async function transformPrompt(userInput: string): Promise<string> {
     // Verify availability after session creation
     availability = await model.availability();
     if (availability !== "available") {
-      throw new Error(
-        `Model is not available after session creation. Status: ${availability}`
-      );
+      throw new Error(`Model is not available after session creation. Status: ${availability}`);
     }
   }
 
@@ -96,10 +94,7 @@ Examples of good transformations:
   });
   console.log("✅ generateObject completed, result:", analysis);
 
-  if (
-    !analysis.transformedPrompt ||
-    analysis.transformedPrompt.trim().length === 0
-  ) {
+  if (!analysis.transformedPrompt || analysis.transformedPrompt.trim().length === 0) {
     throw new Error("LLM returned empty prompt");
   }
 

@@ -12,10 +12,7 @@ export function Spinner() {
   }, []);
 
   return (
-    <span
-      aria-hidden="true"
-      className="inline-block w-3 text-center text-primary"
-    >
+    <span aria-hidden="true" className="inline-block w-3 text-center text-primary">
       {frames[frame]}
     </span>
   );

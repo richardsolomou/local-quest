@@ -24,14 +24,12 @@ export function BrowserUnsupportedDialog() {
     <AlertDialog open={isOpen}>
       <AlertDialogContent className="max-w-md font-mono">
         <AlertDialogHeader>
-          <AlertDialogTitle className="font-mono">
-            &gt; Browser Not Supported
-          </AlertDialogTitle>
+          <AlertDialogTitle className="font-mono">&gt; Browser Not Supported</AlertDialogTitle>
           <AlertDialogDescription asChild>
             <div className="space-y-4 font-mono">
               <p className="text-zinc-300">
-                &gt; Your browser doesn't support the Prompt API, which is
-                required for running AI models.
+                &gt; Your browser doesn't support the Prompt API, which is required for running AI
+                models.
               </p>
 
               {isChromium ? (
@@ -45,18 +43,14 @@ export function BrowserUnsupportedDialog() {
                         chrome://flags/#prompt-api-for-gemini-nano-multimodal-input
                       </code>
                     </li>
-                    <li>
-                      Set "Prompt API for Gemini Nano with Multimodal Input" to
-                      "Enabled"
-                    </li>
+                    <li>Set "Prompt API for Gemini Nano with Multimodal Input" to "Enabled"</li>
                     <li>Restart your browser</li>
                   </ol>
                 </div>
               ) : (
                 <p className="text-sm text-zinc-300">
-                  &gt; Please switch to Chrome 128+ or Edge Dev to use this
-                  application. Other browsers don't currently support Chrome's
-                  built-in AI.
+                  &gt; Please switch to Chrome 128+ or Edge Dev to use this application. Other
+                  browsers don't currently support Chrome's built-in AI.
                 </p>
               )}
 

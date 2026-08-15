@@ -18,13 +18,7 @@ type ChatInputProps = {
   stop: UseChatHelpers<BuiltInAIUIMessage>["stop"];
 };
 
-export function ChatInput({
-  input,
-  onInputChange,
-  onSubmit,
-  status,
-  stop,
-}: ChatInputProps) {
+export function ChatInput({ input, onInputChange, onSubmit, status, stop }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const prevStatusRef = useRef(status);
   const browserSupportsModel = useBrowserAISupport();
@@ -34,11 +28,7 @@ export function ChatInput({
 
   // Autofocus the textarea after a message finishes
   useEffect(() => {
-    if (
-      prevStatusRef.current === "streaming" &&
-      status === "ready" &&
-      textareaRef.current
-    ) {
+    if (prevStatusRef.current === "streaming" && status === "ready" && textareaRef.current) {
       textareaRef.current.focus();
     }
     prevStatusRef.current = status;
@@ -61,19 +51,11 @@ export function ChatInput({
           <PromptInputSubmit
             className="font-mono"
             disabled={
-              status === "submitted" || status === "streaming"
-                ? false
-                : isDisabled || !input.trim()
+              status === "submitted" || status === "streaming" ? false : isDisabled || !input.trim()
             }
-            onClick={
-              status === "submitted" || status === "streaming" ? stop : () => {}
-            }
+            onClick={status === "submitted" || status === "streaming" ? stop : () => {}}
             status={status}
-            type={
-              status === "submitted" || status === "streaming"
-                ? "button"
-                : "submit"
-            }
+            type={status === "submitted" || status === "streaming" ? "button" : "submit"}
           />
         </PromptInputFooter>
       </PromptInput>

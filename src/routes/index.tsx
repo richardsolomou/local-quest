@@ -26,9 +26,7 @@ export default function Home() {
           <div className="w-full max-w-2xl space-y-8">
             <div className="space-y-6">
               <div className="flex items-center justify-center gap-4">
-                <h1 className="font-bold text-3xl text-zinc-100 sm:text-4xl">
-                  local-quest.ras.sh
-                </h1>
+                <h1 className="font-bold text-3xl text-zinc-100 sm:text-4xl">local-quest.ras.sh</h1>
                 <Button asChild variant="outline">
                   <a
                     href="https://github.com/richardsolomou/local-quest"
@@ -47,14 +45,12 @@ export default function Home() {
               </div>
               <div className="space-y-4">
                 <p className="text-xl text-zinc-300 leading-relaxed">
-                  &gt; 🗺️ Local-first AI text adventures using your browser's
-                  built-in AI. Infinite worlds generated and played entirely on
-                  your device.
+                  &gt; 🗺️ Local-first AI text adventures using your browser's built-in AI. Infinite
+                  worlds generated and played entirely on your device.
                 </p>
                 <p className="text-base text-zinc-400 leading-relaxed">
-                  &gt; Choose your adventure seed and let the AI create a unique
-                  world for you to explore. Every decision matters, and every
-                  playthrough is different.
+                  &gt; Choose your adventure seed and let the AI create a unique world for you to
+                  explore. Every decision matters, and every playthrough is different.
                 </p>
               </div>
             </div>
