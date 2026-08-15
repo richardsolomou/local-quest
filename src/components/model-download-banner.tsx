@@ -11,28 +11,20 @@ type ModelDownloadBannerProps = {
   message: string;
 };
 
-export function ModelDownloadBanner({
-  status,
-  progress,
-  message,
-}: ModelDownloadBannerProps) {
+export function ModelDownloadBanner({ status, progress, message }: ModelDownloadBannerProps) {
   // Don't show anything if complete or no message
   const isOpen = status !== "complete" && !!message;
 
   return (
     <AlertDialog open={isOpen}>
       <AlertDialogContent className="max-w-md font-mono">
-        <AlertDialogTitle className="sr-only font-mono">
-          Model Download
-        </AlertDialogTitle>
+        <AlertDialogTitle className="sr-only font-mono">Model Download</AlertDialogTitle>
         <AlertDialogDescription asChild>
           <div className="space-y-3 font-mono">
             <div className="flex items-center justify-between gap-4">
               <p className="text-sm text-zinc-300">&gt; {message}</p>
               {status === "downloading" && (
-                <span className="text-sm text-zinc-400 tabular-nums">
-                  {progress}%
-                </span>
+                <span className="text-sm text-zinc-400 tabular-nums">{progress}%</span>
               )}
             </div>
             {status === "downloading" && (
@@ -43,9 +35,7 @@ export function ModelDownloadBanner({
                 />
               </div>
             )}
-            {status === "error" && (
-              <p className="text-red-400 text-sm">&gt; {message}</p>
-            )}
+            {status === "error" && <p className="text-red-400 text-sm">&gt; {message}</p>}
           </div>
         </AlertDialogDescription>
       </AlertDialogContent>

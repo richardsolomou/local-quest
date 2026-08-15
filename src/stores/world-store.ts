@@ -37,6 +37,5 @@ export const useWorldStore = create<WorldState>((set) => ({
   setWorldData: (worldData) => set({ worldData }),
   setSeedPrompt: (seedPrompt) => set({ seedPrompt }),
   setInitialMessage: (message) => set({ initialMessage: message }),
-  clearWorld: () =>
-    set({ worldData: null, seedPrompt: null, initialMessage: null }),
+  clearWorld: () => set({ worldData: null, seedPrompt: null, initialMessage: null }),
 }));

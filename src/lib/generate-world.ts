@@ -7,13 +7,11 @@ const worldDataSchema = z.object({
   title: z.string().describe("The title of the text adventure world"),
   description: z
     .string()
-    .describe(
-      "A brief 2-3 sentence description of the world and its atmosphere"
-    ),
+    .describe("A brief 2-3 sentence description of the world and its atmosphere"),
   setting: z
     .string()
     .describe(
-      "A detailed description of the world setting, including time period, location, and key environmental details"
+      "A detailed description of the world setting, including time period, location, and key environmental details",
     ),
   startingLocation: z
     .string()
@@ -21,7 +19,7 @@ const worldDataSchema = z.object({
   initialSituation: z
     .string()
     .describe(
-      "The initial situation or scenario the player finds themselves in when the adventure begins"
+      "The initial situation or scenario the player finds themselves in when the adventure begins",
     ),
   characters: z
     .array(
@@ -29,7 +27,7 @@ const worldDataSchema = z.object({
         name: z.string(),
         description: z.string(),
         role: z.string(),
-      })
+      }),
     )
     .optional()
     .describe("Key characters the player might encounter"),
@@ -38,24 +36,19 @@ const worldDataSchema = z.object({
       z.object({
         name: z.string(),
         description: z.string(),
-      })
+      }),
     )
     .optional()
     .describe("Important items or objects in the world"),
-  goals: z
-    .array(z.string())
-    .optional()
-    .describe("Potential goals or objectives for the player"),
+  goals: z.array(z.string()).optional().describe("Potential goals or objectives for the player"),
   tone: z
     .string()
     .describe(
-      "The overall tone of the adventure (e.g., 'dark and mysterious', 'lighthearted and adventurous', 'tense and suspenseful')"
+      "The overall tone of the adventure (e.g., 'dark and mysterious', 'lighthearted and adventurous', 'tense and suspenseful')",
     ),
   genre: z
     .string()
-    .describe(
-      "The genre of the adventure (e.g., 'fantasy', 'sci-fi', 'mystery', 'horror')"
-    ),
+    .describe("The genre of the adventure (e.g., 'fantasy', 'sci-fi', 'mystery', 'horror')"),
 });
 
 export type ProgressState = {
@@ -71,7 +64,7 @@ export type ProgressState = {
  */
 export async function generateWorldData(
   seedPrompt: string,
-  onProgress?: (progress: ProgressState) => void
+  onProgress?: (progress: ProgressState) => void,
 ): Promise<WorldData> {
   const model = builtInAI();
 
@@ -123,10 +116,7 @@ Create an immersive setting with interesting locations, characters, and situatio
   };
 
   // Helper function to update completed fields from an object
-  const updateCompletedFields = (
-    obj: Record<string, unknown>,
-    fields: string[]
-  ): void => {
+  const updateCompletedFields = (obj: Record<string, unknown>, fields: string[]): void => {
     for (const field of fields) {
       const value = obj[field];
       if (isFieldComplete(value) && !completedFields.has(field)) {
@@ -169,13 +159,9 @@ Create an immersive setting with interesting locations, characters, and situatio
           ];
           const optionalFields = ["characters", "items", "goals"];
 
-          let currentField = requiredFields.find(
-            (field) => !completedFields.has(field)
-          );
+          let currentField = requiredFields.find((field) => !completedFields.has(field));
           if (!currentField) {
-            currentField = optionalFields.find(
-              (field) => !completedFields.has(field)
-            );
+            currentField = optionalFields.find((field) => !completedFields.has(field));
           }
 
           onProgress({
@@ -195,7 +181,7 @@ Create an immersive setting with interesting locations, characters, and situatio
 
   // Final update to ensure all fields are marked complete from the final object
   if (onProgress) {
-    updateCompletedFields(worldData as Record<string, unknown>, allFields);
+    updateCompletedFields(worldData, allFields);
     console.log("📊 Final completed fields:", Array.from(completedFields));
     onProgress({
       completedFields: new Set(completedFields),
@@ -204,5 +190,5 @@ Create an immersive setting with interesting locations, characters, and situatio
   }
   console.log("✅ streamObject completed, result:", worldData);
 
-  return worldData as WorldData;
+  return worldData;
 }

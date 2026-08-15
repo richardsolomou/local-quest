@@ -57,9 +57,7 @@ const responseSchema = z.object({
  *
  * @implements {ChatTransport<BuiltInAIUIMessage>}
  */
-export class ClientSideChatTransport
-  implements ChatTransport<BuiltInAIUIMessage>
-{
+export class ClientSideChatTransport implements ChatTransport<BuiltInAIUIMessage> {
   /**
    * Initialize and return the base model.
    */
@@ -103,7 +101,7 @@ export class ClientSideChatTransport
     abortSignal,
   }: {
     model: ReturnType<typeof builtInAI>;
-    prompt: ReturnType<typeof convertToModelMessages>;
+    prompt: Awaited<ReturnType<typeof convertToModelMessages>>;
     writer: any;
     abortSignal?: AbortSignal;
   }): Promise<void> {
@@ -204,11 +202,11 @@ export class ClientSideChatTransport
     } & {
       trigger: "submit-message" | "submit-tool-result" | "regenerate-message";
       messageId: string | undefined;
-    } & ChatRequestOptions
+    } & ChatRequestOptions,
   ): Promise<ReadableStream<UIMessageChunk>> {
     const { messages, abortSignal } = options;
 
-    const prompt = convertToModelMessages(messages);
+    const prompt = await convertToModelMessages(messages);
 
     // Use Chrome's built-in Prompt API for fast, efficient inference
     const model = this.createModel();
@@ -243,8 +241,7 @@ export class ClientSideChatTransport
                   id: downloadProgressId,
                   status: "complete",
                   progress: 100,
-                  message:
-                    "Model finished downloading! Getting ready for inference...",
+                  message: "Model finished downloading! Getting ready for inference...",
                 });
               }
               return;

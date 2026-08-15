@@ -6,16 +6,10 @@ type CustomWorldInputProps = {
   disabled?: boolean;
 };
 
-export function CustomWorldInput({
-  value,
-  onChange,
-  disabled,
-}: CustomWorldInputProps) {
+export function CustomWorldInput({ value, onChange, disabled }: CustomWorldInputProps) {
   return (
     <div className="border-zinc-800 border-t pt-6">
-      <h2 className="mb-3 font-semibold text-lg text-zinc-300">
-        &gt; Custom World:
-      </h2>
+      <h2 className="mb-3 font-semibold text-lg text-zinc-300">&gt; Custom World:</h2>
       <Textarea
         className="border! min-h-32 resize-none border-zinc-800! bg-zinc-900/30! font-mono text-sm text-zinc-300 placeholder:text-zinc-600 focus:border-primary! focus:outline-none! focus:ring-1! focus:ring-primary/20! disabled:cursor-not-allowed disabled:opacity-50"
         disabled={disabled}

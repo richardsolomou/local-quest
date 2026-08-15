@@ -26,55 +26,44 @@ export default function Adventure() {
     message: string;
   } | null>(null);
   const posthog = usePostHog();
-  const {
-    error,
-    status,
-    sendMessage,
-    messages,
-    regenerate,
-    stop,
-    setMessages,
-  } = useChat<BuiltInAIUIMessage>({
-    transport: new ClientSideChatTransport(),
-    onError(error) {
-      toast.error(error.message);
-    },
-    onData: (dataPart) => {
-      // Handle model download progress
-      if (dataPart.type === "data-modelDownloadProgress") {
-        setModelDownload({
-          status: dataPart.data.status,
-          progress: dataPart.data.progress ?? 0,
-          message: dataPart.data.message,
-        });
-        // Clear the download banner when complete
-        if (dataPart.data.status === "complete") {
-          setTimeout(() => setModelDownload(null), 500);
+  const { error, status, sendMessage, messages, regenerate, stop, setMessages } =
+    useChat<BuiltInAIUIMessage>({
+      transport: new ClientSideChatTransport(),
+      onError(error) {
+        toast.error(error.message);
+      },
+      onData: (dataPart) => {
+        // Handle model download progress
+        if (dataPart.type === "data-modelDownloadProgress") {
+          setModelDownload({
+            status: dataPart.data.status,
+            progress: dataPart.data.progress ?? 0,
+            message: dataPart.data.message,
+          });
+          // Clear the download banner when complete
+          if (dataPart.data.status === "complete") {
+            setTimeout(() => setModelDownload(null), 500);
+          }
+          return;
         }
-        return;
-      }
-      // Handle transient notifications
-      if (dataPart.type === "data-notification") {
-        if (dataPart.data.level === "error") {
-          toast.error(dataPart.data.message);
-        } else if (dataPart.data.level === "warning") {
-          toast.warning(dataPart.data.message);
-        } else {
-          toast.info(dataPart.data.message);
+        // Handle transient notifications
+        if (dataPart.type === "data-notification") {
+          if (dataPart.data.level === "error") {
+            toast.error(dataPart.data.message);
+          } else if (dataPart.data.level === "warning") {
+            toast.warning(dataPart.data.message);
+          } else {
+            toast.info(dataPart.data.message);
+          }
         }
-      }
-    },
-  });
+      },
+    });
 
   const hasAddedInitialRef = useRef(false);
 
   // Add initial message when it's available
   useEffect(() => {
-    if (
-      initialMessage &&
-      messages.length === 0 &&
-      !hasAddedInitialRef.current
-    ) {
+    if (initialMessage && messages.length === 0 && !hasAddedInitialRef.current) {
       console.log("Adding initial message to adventure:", initialMessage);
       hasAddedInitialRef.current = true;
       setMessages([
@@ -95,8 +84,7 @@ export default function Adventure() {
   // Send a message
   const handleSubmit = () => {
     // Allow submission when ready, or after an error/stop (not during submit/stream)
-    const canSubmit =
-      input.trim() && status !== "submitted" && status !== "streaming";
+    const canSubmit = input.trim() && status !== "submitted" && status !== "streaming";
 
     if (canSubmit) {
       // Track message submission

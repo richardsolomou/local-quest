@@ -7,6 +7,7 @@
 A privacy-first text adventure game powered by Chrome's built-in Prompt API (Gemini Nano). Generate unique worlds, explore infinite possibilities, and make choices that shape your adventure - all running locally in your browser.
 
 **Supported browsers:**
+
 - Chrome 128+ (with Prompt API enabled)
 - Edge 128+ (with Prompt API enabled)
 
@@ -92,14 +93,14 @@ src/
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start Vite development server |
-| `pnpm build` | Build for production |
-| `pnpm preview` | Preview production build |
-| `pnpm check-types` | TypeScript type checking |
-| `pnpm check` | Lint code with Ultracite (Biome wrapper) |
-| `pnpm fix` | Auto-fix linting issues (with --unsafe flag) |
+| Command            | Description                                  |
+| ------------------ | -------------------------------------------- |
+| `pnpm dev`         | Start Vite development server                |
+| `pnpm build`       | Build for production                         |
+| `pnpm preview`     | Preview production build                     |
+| `pnpm check-types` | TypeScript type checking                     |
+| `pnpm check`       | Lint code with Ultracite (Biome wrapper)     |
+| `pnpm fix`         | Auto-fix linting issues (with --unsafe flag) |
 
 ## Browser Requirements
 
@@ -111,6 +112,7 @@ This app requires Chrome's built-in Prompt API:
 If your browser doesn't support the Prompt API, you'll see a warning dialog. The app checks for support using the `doesBrowserSupportBuiltInAI()` function from `@built-in-ai/core`.
 
 To enable the Prompt API:
+
 1. Open chrome://flags/#prompt-api-for-gemini-nano-multimodal-input
 2. Set to "Enabled"
 3. Restart Chrome
@@ -125,7 +127,9 @@ To enable the Prompt API:
 ## Key Implementation Details
 
 ### World Generation
+
 The app uses structured outputs (`streamObject()`) to generate complete world data including:
+
 - Title and description
 - Setting and starting location
 - Initial situation
@@ -133,16 +137,19 @@ The app uses structured outputs (`streamObject()`) to generate complete world da
 - Characters, items, and goals
 
 ### Adventure Gameplay
+
 - Text-based command interface with `>` prompt prefix
 - Streaming AI responses for immersive storytelling
 - Auto-scrolling conversation view
 - Monospace terminal-style design
 
 ### State Management
+
 - **Zustand store** (`src/stores/world-store.ts`) - Manages world data, seed prompts, and initial messages
 - **AI SDK useChat** - Handles message state, streaming, and lifecycle
 
 ### UI Design
+
 - **Text adventure aesthetic** - Monospace fonts, `>` prefixes, zinc color scheme
 - **Consistent styling** - All pages follow the same text adventure design pattern
 - **Responsive layout** - Works on desktop and mobile devices
