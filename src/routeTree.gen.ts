@@ -9,13 +9,13 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WorldSelectionRouteImport } from './routes/world-selection'
-import { Route as AdventureRouteImport } from './routes/adventure'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdventureRouteImport } from './routes/adventure'
+import { Route as WorldSelectionRouteImport } from './routes/world-selection'
 
-const WorldSelectionRoute = WorldSelectionRouteImport.update({
-  id: '/world-selection',
-  path: '/world-selection',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdventureRoute = AdventureRouteImport.update({
@@ -23,9 +23,9 @@ const AdventureRoute = AdventureRouteImport.update({
   path: '/adventure',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const WorldSelectionRoute = WorldSelectionRouteImport.update({
+  id: '/world-selection',
+  path: '/world-selection',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -61,11 +61,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/world-selection': {
-      id: '/world-selection'
-      path: '/world-selection'
-      fullPath: '/world-selection'
-      preLoaderRoute: typeof WorldSelectionRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/adventure': {
@@ -75,11 +75,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdventureRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/world-selection': {
+      id: '/world-selection'
+      path: '/world-selection'
+      fullPath: '/world-selection'
+      preLoaderRoute: typeof WorldSelectionRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
