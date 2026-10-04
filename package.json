@@ -36,7 +36,7 @@
     "check-types": "tsc --noEmit",
     "check": "oxfmt --check . && oxlint --type-aware --deny-warnings .",
     "fix": "oxfmt --write . && oxlint --type-aware --fix .",
-    "policy:check": "ras policy check"
+    "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.88",
@@ -52,6 +52,7 @@
     "fuse.js": "^7.5.0",
     "nanoid": "^6.0.1",
     "posthog-js": "^1.422.5",
+    "ras-stack": "^3.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "sonner": "^2.0.8",
@@ -71,7 +72,7 @@
     "oxfmt": "0.65.0",
     "oxlint": "1.80.0",
     "oxlint-tsgolint": "7.0.2001",
-    "ras-stack": "0.47.4",
+    "ras-stack-config": "^1.0.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
