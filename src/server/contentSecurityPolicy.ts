@@ -7,7 +7,8 @@ export const contentSecurityPolicy: Record<string, string[]> = {
   // Start streams its hydration data as inline scripts, and the root route adds chunk recovery.
   'script-src': ["'self'", "'unsafe-inline'"],
   'style-src': ["'self'", "'unsafe-inline'"],
-  'img-src': ["'self'", 'data:'],
+  // The footer shows the author's GitHub avatar, which redirects to GitHub's avatar host.
+  'img-src': ["'self'", 'data:', 'https://github.com', 'https://avatars.githubusercontent.com'],
   'font-src': ["'self'", 'data:'],
   'connect-src': ["'self'"],
   'object-src': ["'none'"],

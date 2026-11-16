@@ -71,7 +71,8 @@
         "The root route keeps its SEO, font preload, and icon head tags, its own error and not-found components, the `dark` theme on `<body>`, and the `sonner` toaster in the document.",
         "The router keeps the application's `DefaultCatchBoundary` and `NotFound` as its default error and not-found components.",
         "`vite.config.ts` resolves the `~/*` alias with Vite's `resolve.tsconfigPaths`.",
-        "The home page is the application's own, not the recipe's starter."
+        "The home page is the application's own, not the recipe's starter.",
+        "The Content Security Policy also allows GitHub images for the footer avatar, which `github.com/<user>.png` serves from `avatars.githubusercontent.com`."
       ]
     },
     "tooling": {
