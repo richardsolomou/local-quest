@@ -1,19 +1,19 @@
-"use client";
+'use client'
 
-import { SiGithub } from "@icons-pack/react-simple-icons";
-import { usePostHog } from "@posthog/react";
-import { Button } from "@ras-sh/ui/button";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { BrowserUnsupportedDialog } from "~/components/browser-unsupported-dialog";
-import { Footer } from "~/components/footer";
+import { SiGithub } from '@icons-pack/react-simple-icons'
+import { usePostHog } from '@posthog/react'
+import { Button } from '@ras-sh/ui/button'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { BrowserUnsupportedDialog } from '~/components/browser-unsupported-dialog'
+import { Footer } from '~/components/footer'
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Home,
-});
+})
 
 export default function Home() {
-  const navigate = useNavigate();
-  const posthog = usePostHog();
+  const navigate = useNavigate()
+  const posthog = usePostHog()
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background">
@@ -31,8 +31,8 @@ export default function Home() {
                   <a
                     href="https://github.com/richardsolomou/local-quest"
                     onClick={() =>
-                      posthog?.capture("github_link_clicked", {
-                        location: "intro_screen",
+                      posthog?.capture('github_link_clicked', {
+                        location: 'intro_screen',
                       })
                     }
                     rel="noopener noreferrer"
@@ -45,22 +45,18 @@ export default function Home() {
               </div>
               <div className="space-y-4">
                 <p className="text-xl text-zinc-300 leading-relaxed">
-                  &gt; 🗺️ Local-first AI text adventures using your browser's built-in AI. Infinite
-                  worlds generated and played entirely on your device.
+                  &gt; 🗺️ Local-first AI text adventures using your browser's built-in AI. Infinite worlds generated and played entirely on
+                  your device.
                 </p>
                 <p className="text-base text-zinc-400 leading-relaxed">
-                  &gt; Choose your adventure seed and let the AI create a unique world for you to
-                  explore. Every decision matters, and every playthrough is different.
+                  &gt; Choose your adventure seed and let the AI create a unique world for you to explore. Every decision matters, and every
+                  playthrough is different.
                 </p>
               </div>
             </div>
 
             <div className="flex justify-center pt-4">
-              <Button
-                className="w-full font-mono md:w-auto"
-                onClick={() => navigate({ to: "/world-selection" })}
-                size="lg"
-              >
+              <Button className="w-full font-mono md:w-auto" onClick={() => navigate({ to: '/world-selection' })} size="lg">
                 &gt; Begin Your Adventure
               </Button>
             </div>
@@ -75,5 +71,5 @@ export default function Home() {
         </footer>
       </div>
     </div>
-  );
+  )
 }

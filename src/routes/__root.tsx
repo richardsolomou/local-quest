@@ -1,85 +1,101 @@
 /// <reference types="vite/client" />
 
-import geistWoff2 from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
-import geistMonoWoff2 from "@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url";
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-import type * as React from "react";
-import { Toaster } from "sonner";
-import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
-import { NotFound } from "~/components/not-found";
-import { PHProvider } from "~/components/ph-provider";
-import { seo } from "~/lib/seo";
-import appCss from "~/styles/app.css?url";
+import geistWoff2 from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url'
+import geistMonoWoff2 from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url'
+import type { QueryClient } from '@tanstack/react-query'
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
+import type { ReactNode } from 'react'
+import { Toaster } from 'sonner'
+import { chunkRecoveryScript, updateNoticeId } from '~/client/chunkRecovery'
+import { PostHogIntegration } from '~/client/posthog'
+import { DefaultCatchBoundary } from '~/components/default-catch-boundary'
+import { NotFound } from '~/components/not-found'
+import { seo } from '~/lib/seo'
+import appCss from '~/styles/app.css?url'
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       {
-        charSet: "utf-8",
+        charSet: 'utf-8',
       },
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title: "local-quest.ras.sh - Local AI Text Adventures",
+        title: 'local-quest.ras.sh - Local AI Text Adventures',
         description:
           "Local-first AI text adventures using your browser's built-in AI. Infinite worlds generated and played entirely on your device.",
       }),
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
+      { rel: 'stylesheet', href: appCss },
       {
-        rel: "preload",
-        as: "font",
-        type: "font/woff2",
+        rel: 'preload',
+        as: 'font',
+        type: 'font/woff2',
         href: geistWoff2,
-        crossOrigin: "anonymous",
+        crossOrigin: 'anonymous',
       },
       {
-        rel: "preload",
-        as: "font",
-        type: "font/woff2",
+        rel: 'preload',
+        as: 'font',
+        type: 'font/woff2',
         href: geistMonoWoff2,
-        crossOrigin: "anonymous",
+        crossOrigin: 'anonymous',
       },
       {
-        rel: "apple-touch-icon",
-        sizes: "180x180",
-        href: "/apple-touch-icon.png",
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/apple-touch-icon.png',
       },
       {
-        rel: "icon",
-        type: "image/png",
-        sizes: "32x32",
-        href: "/favicon-32x32.png",
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/favicon-32x32.png',
       },
       {
-        rel: "icon",
-        type: "image/png",
-        sizes: "16x16",
-        href: "/favicon-16x16.png",
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: '/favicon-16x16.png',
       },
-      { rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
-      { rel: "icon", href: "/favicon.ico" },
+      { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
+      { rel: 'icon', href: '/favicon.ico' },
     ],
+    scripts: [{ children: chunkRecoveryScript }],
   }),
   errorComponent: DefaultCatchBoundary,
   notFoundComponent: () => <NotFound />,
-  shellComponent: RootDocument,
-});
+  shellComponent: Document,
+  component: Root,
+})
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+// A shell keeps the root's error and not-found pages inside the document, and `Root`'s providers inside the root's error boundary.
+function Document({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
       <body className="dark min-h-dvh font-sans text-foreground antialiased">
-        <PHProvider>{children}</PHProvider>
+        <p id={updateNoticeId} hidden className="bg-amber-100 px-4 py-2 text-center text-sm text-amber-950">
+          A new version is available. Reload the page to continue.
+        </p>
+        {children}
         <Toaster position="top-center" richColors />
         <Scripts />
       </body>
     </html>
-  );
+  )
+}
+
+function Root() {
+  return (
+    <PostHogIntegration>
+      <Outlet />
+    </PostHogIntegration>
+  )
 }

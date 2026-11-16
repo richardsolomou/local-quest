@@ -1,5 +1,5 @@
-import { Button } from "@ras-sh/ui/button";
-import { Link } from "@tanstack/react-router";
+import { Button } from '@ras-sh/ui/button'
+import { Link } from '@tanstack/react-router'
 
 export function NotFound({ children }: { children?: React.ReactNode }) {
   return (
@@ -22,5 +22,5 @@ export function NotFound({ children }: { children?: React.ReactNode }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

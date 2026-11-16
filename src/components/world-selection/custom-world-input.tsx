@@ -1,10 +1,10 @@
-import { Textarea } from "@ras-sh/ui/textarea";
+import { Textarea } from '@ras-sh/ui/textarea'
 
 type CustomWorldInputProps = {
-  value: string;
-  onChange: (value: string) => void;
-  disabled?: boolean;
-};
+  value: string
+  onChange: (value: string) => void
+  disabled?: boolean
+}
 
 export function CustomWorldInput({ value, onChange, disabled }: CustomWorldInputProps) {
   return (
@@ -18,5 +18,5 @@ export function CustomWorldInput({ value, onChange, disabled }: CustomWorldInput
         value={value}
       />
     </div>
-  );
+  )
 }
