@@ -39,7 +39,7 @@
     "format:check": "oxfmt --check .",
     "fix": "oxfmt --write . && oxlint --type-aware --fix .",
     "test": "vitest run",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm format:check && pnpm lint && pnpm build && pnpm typecheck && pnpm test"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.121",
@@ -49,7 +49,9 @@
     "@icons-pack/react-simple-icons": "^13.15.1",
     "@posthog/react": "^1.11.2",
     "@ras-sh/ui": "^0.0.6",
+    "@tanstack/react-query": "^5.107.1",
     "@tanstack/react-router": "^1.170.40",
+    "@tanstack/react-router-ssr-query": "^1.167.3",
     "@tanstack/react-start": "^1.168.59",
     "ai": "^7.0.118",
     "fuse.js": "^7.5.0",
@@ -70,7 +72,7 @@
     "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react-swc": "^4.3.3",
+    "@vitejs/plugin-react": "^6.3.0",
     "lefthook": "^2.1.14",
     "oxfmt": "0.70.0",
     "oxlint": "1.85.0",
@@ -78,7 +80,6 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.3.1",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.12",
     "wrangler": "4.142.0"
   },
