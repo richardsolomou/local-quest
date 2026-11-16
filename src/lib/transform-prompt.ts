@@ -1,6 +1,6 @@
-import { builtInAI } from "@built-in-ai/core";
-import { generateObject } from "ai";
-import { z } from "zod";
+import { builtInAI } from '@built-in-ai/core'
+import { generateObject } from 'ai'
+import { z } from 'zod'
 
 const promptAnalysisSchema = z.object({
   needsTransformation: z
@@ -13,7 +13,7 @@ const promptAnalysisSchema = z.object({
     .describe(
       "The transformed prompt ready for world generation. If needsTransformation is false, this should be the original input. If true, this should be a complete prompt starting with 'You are a text adventure game...' that captures the essence of the input.",
     ),
-});
+})
 
 /**
  * Uses LLM to intelligently analyze and transform user input into a proper text adventure game prompt.
@@ -21,29 +21,29 @@ const promptAnalysisSchema = z.object({
  * Follows the same pattern as generate-world.ts
  */
 export async function transformPrompt(userInput: string): Promise<string> {
-  const trimmed = userInput.trim();
+  const trimmed = userInput.trim()
 
   // Quick check: if it's clearly already a full prompt, return early
   if (
-    trimmed.toLowerCase().startsWith("you are a text adventure game") ||
-    trimmed.toLowerCase().startsWith("you are a text-based adventure game")
+    trimmed.toLowerCase().startsWith('you are a text adventure game') ||
+    trimmed.toLowerCase().startsWith('you are a text-based adventure game')
   ) {
-    return trimmed;
+    return trimmed
   }
 
-  const model = builtInAI();
+  const model = builtInAI()
 
   // Check availability and handle model download if needed
-  let availability = await model.availability();
-  if (availability !== "available") {
+  let availability = await model.availability()
+  if (availability !== 'available') {
     // Create session with progress tracking
     await model.createSessionWithProgress(() => {
       // Progress callback - could be used for UI updates if needed
-    });
+    })
     // Verify availability after session creation
-    availability = await model.availability();
-    if (availability !== "available") {
-      throw new Error(`Model is not available after session creation. Status: ${availability}`);
+    availability = await model.availability()
+    if (availability !== 'available') {
+      throw new Error(`Model is not available after session creation. Status: ${availability}`)
     }
   }
 
@@ -78,25 +78,25 @@ Style guidelines:
 
 Examples of good transformations:
 - "pokemon red" → "You are a text adventure game set in the Pokémon world. The player is a Pokémon Trainer starting their journey, catching wild Pokémon, battling Gym Leaders, and exploring diverse regions filled with unique creatures. Present encounters with wild Pokémon, trainer battles, Pokémon Centers, and the thrill of discovery. Include type advantages, evolution mechanics, and the bond between trainer and Pokémon. Allow the player to build their team, explore routes and cities, and work toward becoming a Pokémon Champion. Create an adventure filled with friendship, strategy, and the wonder of discovering new Pokémon."
-- "cyberpunk 2077" → "You are a text adventure game set in Cyberpunk 2077's Night City. The player is a mercenary, netrunner, or street kid navigating a dystopian future filled with cyberware, corporate power, and street gangs. Present chrome enhancements, hacking the Net, braindances, and the struggle between megacorporations. Include fixers, cyberpsychosis, the Afterlife bar, and the dark side of technology. Allow the player to make choices about their cyberware, allegiances, and how they survive in Night City. Create a gritty cyberpunk adventure where style and substance matter, and every choice has consequences in a world where humanity is being replaced by technology."`;
+- "cyberpunk 2077" → "You are a text adventure game set in Cyberpunk 2077's Night City. The player is a mercenary, netrunner, or street kid navigating a dystopian future filled with cyberware, corporate power, and street gangs. Present chrome enhancements, hacking the Net, braindances, and the struggle between megacorporations. Include fixers, cyberpsychosis, the Afterlife bar, and the dark side of technology. Allow the player to make choices about their cyberware, allegiances, and how they survive in Night City. Create a gritty cyberpunk adventure where style and substance matter, and every choice has consequences in a world where humanity is being replaced by technology."`
 
-  console.log("🔧 Calling generateObject with model and schema");
+  console.log('🔧 Calling generateObject with model and schema')
   const { object: analysis } = await generateObject({
     model,
     system: systemPrompt,
     messages: [
       {
-        role: "user",
+        role: 'user',
         content: `Analyze this input and transform it if needed:\n\n${trimmed}`,
       },
     ],
     schema: promptAnalysisSchema,
-  });
-  console.log("✅ generateObject completed, result:", analysis);
+  })
+  console.log('✅ generateObject completed, result:', analysis)
 
   if (!analysis.transformedPrompt || analysis.transformedPrompt.trim().length === 0) {
-    throw new Error("LLM returned empty prompt");
+    throw new Error('LLM returned empty prompt')
   }
 
-  return analysis.transformedPrompt;
+  return analysis.transformedPrompt
 }

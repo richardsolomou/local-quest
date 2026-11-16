@@ -1,18 +1,13 @@
-import { Button } from "@ras-sh/ui/button";
+import { Button } from '@ras-sh/ui/button'
 
 type WorldSearchBarProps = {
-  searchQuery: string;
-  onSearchChange: (value: string) => void;
-  onRandomSelect: () => void;
-  disabled?: boolean;
-};
+  searchQuery: string
+  onSearchChange: (value: string) => void
+  onRandomSelect: () => void
+  disabled?: boolean
+}
 
-export function WorldSearchBar({
-  searchQuery,
-  onSearchChange,
-  onRandomSelect,
-  disabled,
-}: WorldSearchBarProps) {
+export function WorldSearchBar({ searchQuery, onSearchChange, onRandomSelect, disabled }: WorldSearchBarProps) {
   return (
     <div className="flex gap-2">
       <input
@@ -23,16 +18,9 @@ export function WorldSearchBar({
         type="text"
         value={searchQuery}
       />
-      <Button
-        className="h-10 shrink-0 font-mono"
-        disabled={disabled}
-        onClick={onRandomSelect}
-        size="sm"
-        type="button"
-        variant="outline"
-      >
+      <Button className="h-10 shrink-0 font-mono" disabled={disabled} onClick={onRandomSelect} size="sm" type="button" variant="outline">
         &gt; Random
       </Button>
     </div>
-  );
+  )
 }
