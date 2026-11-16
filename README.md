@@ -93,14 +93,15 @@ src/
 
 ## Scripts
 
-| Command            | Description                                  |
-| ------------------ | -------------------------------------------- |
-| `pnpm dev`         | Start Vite development server                |
-| `pnpm build`       | Build for production                         |
-| `pnpm preview`     | Preview production build                     |
-| `pnpm check-types` | TypeScript type checking                     |
-| `pnpm check`       | Lint code with Ultracite (Biome wrapper)     |
-| `pnpm fix`         | Auto-fix linting issues (with --unsafe flag) |
+| Command          | Description                                         |
+| ---------------- | --------------------------------------------------- |
+| `pnpm dev`       | Start Vite development server                       |
+| `pnpm build`     | Build for production                                |
+| `pnpm preview`   | Preview the production build in workerd             |
+| `pnpm typecheck` | TypeScript type checking                            |
+| `pnpm test`      | Run the Vitest tests                                |
+| `pnpm check`     | Formatting, lint, types, and tests, as CI runs them |
+| `pnpm fix`       | Format and auto-fix lint issues                     |
 
 ## Browser Requirements
 

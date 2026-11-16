@@ -33,10 +33,13 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "check-types": "tsc --noEmit",
-    "check": "oxfmt --check . && oxlint --type-aware --deny-warnings .",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint --type-aware --deny-warnings .",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "fix": "oxfmt --write . && oxlint --type-aware --fix .",
-    "test": "node --test test/*.test.mjs"
+    "test": "vitest run",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.121",
@@ -52,7 +55,7 @@
     "fuse.js": "^7.5.0",
     "nanoid": "^6.0.1",
     "posthog-js": "^1.430.3",
-    "ras-stack": "^4.0.0",
+    "ras-stack": "^5.5.6",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "sonner": "^2.0.8",
@@ -72,11 +75,11 @@
     "oxfmt": "0.70.0",
     "oxlint": "1.85.0",
     "oxlint-tsgolint": "7.0.2003",
-    "ras-stack-config": "^3.0.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.3.1",
     "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.12",
     "wrangler": "4.142.0"
   },
   "engines": {
