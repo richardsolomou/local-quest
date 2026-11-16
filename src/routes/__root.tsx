@@ -7,9 +7,9 @@ import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanst
 import type { ReactNode } from 'react'
 import { Toaster } from 'sonner'
 import { chunkRecoveryScript, updateNoticeId } from '~/client/chunkRecovery'
+import { PostHogIntegration } from '~/client/posthog'
 import { DefaultCatchBoundary } from '~/components/default-catch-boundary'
 import { NotFound } from '~/components/not-found'
-import { PHProvider } from '~/components/ph-provider'
 import { seo } from '~/lib/seo'
 import appCss from '~/styles/app.css?url'
 
@@ -94,8 +94,8 @@ function Document({ children }: { children: ReactNode }) {
 
 function Root() {
   return (
-    <PHProvider>
+    <PostHogIntegration>
       <Outlet />
-    </PHProvider>
+    </PostHogIntegration>
   )
 }
